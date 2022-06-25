@@ -20,13 +20,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/redirect-user', function () {
+    if (\App\Helpers\GuardHelper::check() === "admins") {
+        return redirect()->route('admins.home');
+    } elseif(\App\Helpers\GuardHelper::check() === "superAdmin") {
+        return redirect()->route('superAdmin.home');
+    } else {
+        return redirect()->route('student.home');
+    }
+})->name('redirect-user');
+
 Route::post('superadmin/login', [App\Http\Controllers\Auth\LoginController::class, 'superAdminLogin'])->name('superAdmin.login-redirect');
 Route::post('admins/login', [App\Http\Controllers\Auth\LoginController::class, 'adminLogin'])->name('admins.login-redirect');
-//Route::get('user/login', [App\Http\Controllers\Auth\LoginController::class, 'userLogin'])->name('user.login-redirect');
+Route::post('user/login', [App\Http\Controllers\Auth\LoginController::class, 'userLogin'])->name('user.login-redirect');
 
 Route::group(['prefix' => 'superadmin', 'middleware' => 'auth:superAdmin'], function () {
     Route::get('/login', [LoginController::class, 'showSuperAdminLoginForm'])->name('superAdmin.login');
-    Route::get('home', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'index'])->name('superAdmin.home');
+    Route::get('/home', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'index'])->name('superAdmin.home');
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 
@@ -36,9 +46,9 @@ Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () 
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 
-Route::group(['prefix' => 'user', 'middleware' => 'auth:superAdmin'], function () {
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/login', [LoginController::class, 'showStudentLoginForm'])->name('student.login');
-    Route::get('home', [\App\Http\Controllers\Student\StudentController::class, 'index'])->name('student.home');
+    Route::get('/home', [\App\Http\Controllers\Student\StudentController::class, 'index'])->name('student.home');
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 

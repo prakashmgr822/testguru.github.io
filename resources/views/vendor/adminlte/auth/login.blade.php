@@ -184,7 +184,7 @@
                 @endif
             </div>
             <div class="tab-pane" id="student">
-                <form action="{{ $login_url }}" method="post">
+                <form action="{{ route('user.login-redirect') }}" method="post">
                     @csrf
 
                     <input type="hidden" name="login_type" value="user">

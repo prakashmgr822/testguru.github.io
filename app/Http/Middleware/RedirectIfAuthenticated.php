@@ -28,7 +28,7 @@ class RedirectIfAuthenticated
         } elseif ($superAdmin) {
             return redirect('/superadmin/home');
         } elseif ($user) {
-            return redirect(RouteServiceProvider::HOME);
+            return redirect('/user/home');
         }
 
         return $next($request);

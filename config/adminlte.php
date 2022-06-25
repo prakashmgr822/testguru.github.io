@@ -188,7 +188,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'redirect-user',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -242,81 +242,22 @@ return [
             'text' => 'search',
         ],
         [
-            'text' => 'blog',
-            'url'  => 'admins/blog',
-            'can'  => 'manage-blog',
+            'text' => 'Dashboard',
+            'route' => 'superAdmin.home',
+            'icon' => 'nav-icon fas fa-th',
+            'guard' => 'superAdmin'
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admins/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admins/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'Dashboard',
+            'route' => 'admins.home',
+            'icon' => 'nav-icon fas fa-th',
+            'guard' => 'admins'
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admins/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text' => 'Dashboard',
+            'route' => 'student.home',
+            'icon' => 'nav-icon fas fa-th',
+            'guard' => 'web'
         ],
     ],
 
@@ -340,6 +281,7 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
+        App\Helpers\MenuFilter::class,
     ],
 
     /*
