@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Grade;
+use App\Models\Question;
+use App\Models\Subject;
 use App\Models\Test;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -156,41 +158,18 @@ class TestController extends BaseController
 
 
         if ($request->subject_id === "-1") {
-            //all option and included childern
-            if ($request->include_sub_chapters) {
-                $childrenChapterIds = Chapter::with('children')
-                    ->where('subject_id', $request->subject_id)->pluck('id')->toArray();
-
-
-                $questionIds = Question::whereHas('chapter', function ($q) use ($request) {
-                    $q->where('subject_id', $request->subject_id);
-                })
-                    ->whereIn('chapter_id', $childrenChapterIds)
-                    ->InRandomOrder()
-                    ->limit($request->get('count', 5))
-                    ->pluck('id')->toArray();
-            } else {
-                $questionIds = Question::whereHas('chapter', function ($q) use ($request) {
-                    $q->where('subject_id', $request->subject_id);
+                $questionIds = Question::whereHas('subject', function ($q) use ($request) {
+                    $q->where('grade_id', $request->grade_id);
                 })
                     ->InRandomOrder()
-                    ->limit($request->get('count', 5))
+                    ->limit($request->get('count_question', 5))
                     ->pluck('id')->toArray();
-            }
         } else {
-            $chapter = Chapter::findOrFail($request->chapter_id);
-            $searchChapterIds = [$request->chapter_id];
-            if ($request->include_sub_chapters) {
-                $subChapterIds = $chapter->children->pluck('id')->toArray();
+            $searchSubjectIds = [$request->subject_id];
 
-                $searchChapterIds = array_merge($searchChapterIds, $subChapterIds);
-            }
-
-
-            $questionIds = Question::whereIn('chapter_id', $searchChapterIds)
+            $questionIds = Question::whereIn('subject_id', $searchSubjectIds)
                 ->InRandomOrder()
-                ->limit($request->get('count', 5))->pluck('id')->toArray();
-            //            $mainQuestions = $questionIds->where('chapter_id',$request->chapter_id)->get();
+                ->limit($request->get('count_question', 5))->pluck('id')->toArray();
         }
         if ($request->random_order) {
             shuffle($questionIds);
