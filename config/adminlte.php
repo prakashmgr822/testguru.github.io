@@ -248,9 +248,39 @@ return [
             'guard' => 'superAdmin'
         ],
         [
+            'text' => 'Admin',
+            'route' => 'admins.index',
+            'icon'  => 'nav-icon fas fa-user',
+            'guard' => 'superAdmin'
+        ],
+        [
             'text' => 'Dashboard',
             'route' => 'admins.home',
             'icon' => 'nav-icon fas fa-th',
+            'guard' => 'admins'
+        ],
+        [
+            'text' => 'Grade',
+            'route' => 'grades.index',
+            'icon' => 'nav-icon fas fa-list-ol ',
+            'guard' => 'admins'
+        ],
+        [
+            'text' => 'Student',
+            'route' => 'students.index',
+            'icon' => 'nav-icon fas fa-users',
+            'guard' => 'admins'
+        ],
+        [
+            'text' => 'Question',
+            'route' => 'questions.index',
+            'icon' => 'nav-icon fas fa-question-circle',
+            'guard' => 'admins'
+        ],
+        [
+            'text' => 'Online Tests',
+            'route' => 'tests.index',
+            'icon' => 'nav-icon fas fa-globe',
             'guard' => 'admins'
         ],
         [

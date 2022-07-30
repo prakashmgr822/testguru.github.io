@@ -36,14 +36,19 @@ Route::post('user/login', [App\Http\Controllers\Auth\LoginController::class, 'us
 
 Route::group(['prefix' => 'superadmin', 'middleware' => 'auth:superAdmin'], function () {
     Route::get('/login', [LoginController::class, 'showSuperAdminLoginForm'])->name('superAdmin.login');
-    Route::get('/home', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'index'])->name('superAdmin.home');
+    Route::get('/home', [\App\Http\Controllers\SuperAdmin\DashboardController::class, 'index'])->name('superAdmin.home');
     Route::get('/logout', [LoginController::class, 'logout']);
+    Route::resource('admins', \App\Http\Controllers\SuperAdmin\AdminController::class);
 });
 
 Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () {
     Route::get('/login', [LoginController::class, 'showAdminLoginForm'])->name('admins.login');
-    Route::get('home', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admins.home');
+    Route::get('home', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admins.home');
     Route::get('/logout', [LoginController::class, 'logout']);
+    Route::resource('grades', \App\Http\Controllers\Admin\GradeController::class);
+    Route::resource('students', \App\Http\Controllers\Admin\StudentController::class);
+    Route::resource('questions', \App\Http\Controllers\Admin\QuestionController::class);
+    Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
@@ -51,4 +56,6 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/home', [\App\Http\Controllers\Student\StudentController::class, 'index'])->name('student.home');
     Route::get('/logout', [LoginController::class, 'logout']);
 });
+
+Route::resource('uploader', \App\Http\Controllers\UploadController::class);
 

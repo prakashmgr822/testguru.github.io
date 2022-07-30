@@ -1,4 +1,4 @@
-v@extends('adminlte::page')
+@extends('adminlte::page')
 
 @section('title', 'Add '.$title)
 

@@ -5,8 +5,13 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SuperAdminController extends Controller
+class DashboardController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,7 @@ class SuperAdminController extends Controller
      */
     public function index()
     {
-        return view('superAdmin.home');
+        return view('home');
     }
 
     /**

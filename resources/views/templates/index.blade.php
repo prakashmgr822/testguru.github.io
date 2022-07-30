@@ -12,39 +12,11 @@
 @stop
 
 @section('js')
-    <script>
-        $(document).ready(function () {
-            var btnBulkDelete = $("#btn-bulk-delete");
-
-            btnBulkDelete.on('click', function () {
-                let checkboxes = $("[name='selections[]']")
-                var deletable = [];
-                checkboxes.each(function () {
-                    if (this.checked) deletable.push(this.value);
-                });
-                if (deletable.length == 0) {
-                    alert("Please select the items to delete.")
-                } else {
-                    $("#bulk-delete-ids").val(deletable)
-                    var route = '{{route('bulkDelete',"bulk")}}';
-                    route = route.replace("bulk", deletable);
-                    $("#bulk-delete-form").attr('action', route)
-                    $("#bulk-delete-form").submit()
-                }
-            })
-        })
-    </script>
     @stack('scripts')
 @stop
 
 
 @section('content')
-    <form id="bulk-delete-form" method="POST">
-        @csrf
-        @method('DELETE')
-        <input id="bulk-delete-ids" name="id" type="hidden">
-    </form>
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -54,21 +26,15 @@
                             <h3 class="card-title">{{$title}}</h3>
                             <div class="float-right">
                                 @if(!isset($hideCreate))
+                                    <div class="float-right">
 
-                                    @if(isset($app_name))
-                                        <a href="{{isset($customCreateRoute)?$customCreateRoute:route($route.'create',['app_name'=>$app_name])}}"
+                                        <a href="{{route($route.'create')}}"
                                            class="btn btn-primary float-right">
                                             <i class="fa fa-plus"></i>
-                                            <span class="kt-hidden-mobile">Add new</span>
-                                        </a>
-                                    @else
-                                        <a href="{{isset($customCreateRoute)?$customCreateRoute:route($route.'create')}}"
-                                           class="btn btn-primary float-right">
-                                            <i class="fa fa-plus"></i>
-                                            <span class="kt-hidden-mobile">Add new</span>
+                                            <span class="kt-hidden-mobile">Add</span>
                                         </a>
 
-                                    @endif
+                                    </div>
                                 @endif
 
                                 @if(isset($showDelete))
