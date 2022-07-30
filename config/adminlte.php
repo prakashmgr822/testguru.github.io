@@ -266,6 +266,12 @@ return [
             'guard' => 'admins'
         ],
         [
+            'text' => 'Subject',
+            'route' => 'subjects.index',
+            'icon' => 'nav-icon fas fa-book',
+            'guard' => 'admins'
+        ],
+        [
             'text' => 'Student',
             'route' => 'students.index',
             'icon' => 'nav-icon fas fa-users',

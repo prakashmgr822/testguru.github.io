@@ -6,19 +6,17 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Grade;
 use App\Models\Subject;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class StudentController extends BaseController
+class SubjectController extends BaseController
 {
-
     public function __construct()
     {
-        $this->title = 'Students';
-        $this->resources = 'admins.students.';
+        $this->title = 'Subjects';
+        $this->resources = 'admins.subjects.';
         parent::__construct();
-        $this->route = 'students.';
+        $this->route = 'subjects.';
     }
 
     /**
@@ -31,7 +29,7 @@ class StudentController extends BaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::orderBy('id', 'DESC')->get();
+            $data = Subject::orderBy('id', 'DESC')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($data) {
@@ -66,13 +64,19 @@ class StudentController extends BaseController
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-        $data = $request->all();
-        $admin = new User($data);
-        $admin->save();
-        return redirect()->route($this->indexRoute())->with('success', 'Admin Created Successfully.');
+//        $request->validate([
+//            'name' => 'required',
+//        ]);
+
+        foreach ($request->names as $name)
+        {
+            $subject = new Subject();
+            $subject->grade_id = $request->grade_id;
+            $subject->name = $name;
+            $subject->save();
+        }
+
+        return redirect()->route($this->indexRoute());
     }
 
     /**
@@ -84,7 +88,7 @@ class StudentController extends BaseController
     public function show($id)
     {
         $info = $this->crudInfo();
-        $info['item'] = User::findOrFail($id);
+        $info['item'] = Subject::findOrFail($id);
         return view($this->showResource(), $info);
     }
 
@@ -97,7 +101,7 @@ class StudentController extends BaseController
     public function edit($id)
     {
         $info = $this->crudInfo();
-        $info['item'] = User::findOrFail($id);
+        $info['item'] = Subject::findOrFail($id);
         $info['grades'] = Grade::all();
         return view($this->editResource(), $info);
     }
@@ -115,7 +119,7 @@ class StudentController extends BaseController
             'name' => 'required'
         ]);
         $data = $request->all();
-        $admin = User::findOrFail($id);
+        $admin = Subject::findOrFail($id);
         $admin->update($data);
         return redirect()->route($this->indexRoute())->with('success', 'Admin Updated Successfully.');
     }
@@ -128,7 +132,7 @@ class StudentController extends BaseController
      */
     public function destroy($id)
     {
-        $admin = User::findOrFail($id);
+        $admin = Subject::findOrFail($id);
         $admin->delete();
         return redirect()->route($this->indexRoute())->with('success', 'Admin Deleted Successfully');
     }
