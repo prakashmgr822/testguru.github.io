@@ -8,8 +8,13 @@
             @endforeach
         </select>
     </div>
+    @if(isset($item))
+    <div class="col-6">
+        <label for="">Subject Name</label>
+        <input type="text" name="name" value="{{$item->name}}" class="form-control">
+    </div>
+    @endif
 </div>
-
 <div id="subject-name" class="my-3 mb-3" style="display: none">
     <div class="text-right">
         <button type="button" class="btn btn-success" id="add-subjects">Add subjects</button>

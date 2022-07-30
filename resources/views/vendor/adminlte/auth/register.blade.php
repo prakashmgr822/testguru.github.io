@@ -53,6 +53,65 @@
             @enderror
         </div>
 
+        {{-- Grade field --}}
+        <div class="input-group mb-3">
+            <select name="grade_id" id="grade" class="form-control" required>
+                <option value="">Select Grade</option>
+                @foreach(\App\Models\Grade::all() as $grade)
+                    <option value="{{ $grade->id }}">{{$grade->name }}</option>
+                @endforeach
+            </select>
+
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-list-ol {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+
+            @error('grade')
+            <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        {{-- Phone Number --}}
+        <div class="input-group mb-3">
+            <input type="number" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                   value="" placeholder="Enter Phone Number">
+
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-phone-square {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+
+            @error('phone')
+            <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        {{-- ROllno Number --}}
+        <div class="input-group mb-3">
+            <input type="number" name="roll_no" class="form-control @error('roll_no') is-invalid @enderror"
+                   value="" placeholder="Enter Roll Number">
+
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-address-book {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+
+            @error('roll_no')
+            <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+
         {{-- Password field --}}
         <div class="input-group mb-3">
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
