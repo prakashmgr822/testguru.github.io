@@ -14,4 +14,9 @@ class Test extends Model
     public function grade(){
         return $this->belongsTo(User::class);
     }
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class, 'question_tests')->withTimestamps();
+    }
 }

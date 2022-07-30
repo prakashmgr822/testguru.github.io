@@ -1,6 +1,8 @@
+@if(!isset($hideShow))
 <a href="{{route($route.'show',$id??$item->id)}}"
    class="btn btn-sm btn-clean btn-icon btn-hover-primary"><i
         class="fa fa-eye"></i></a>
+@endif
 
 <a href="{{route($route.'edit',$id??$item->id)}}"
    class="btn btn-sm btn-clean btn-icon btn-hover-info"><i

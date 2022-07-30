@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('grade_id')->nullable();
             $table->text('description')->nullable();
             $table->decimal('correct_marks')->nullable();
+            $table->integer('exam_duration')->nullable();
             $table->decimal('incorrect_marks')->nullable();
             $table->dateTime('target_date')->nullable();
             $table->boolean('status')->default('1');
