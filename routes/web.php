@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () 
     Route::resource('students', \App\Http\Controllers\Admin\StudentController::class);
     Route::resource('questions', \App\Http\Controllers\Admin\QuestionController::class);
     Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
+    Route::post('addQuestions/{id}', [\App\Http\Controllers\Admin\TestController::class, 'addQuestion'])->name('addQuestions');
     Route::resource('subjects', \App\Http\Controllers\Admin\SubjectController::class);
 });
 

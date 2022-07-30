@@ -148,4 +148,55 @@ class TestController extends BaseController
         $test->delete();
         return redirect()->route($this->indexRoute())->with('success', 'Test Deleted Successfully.');
     }
+
+    public function addQuestion(Request $request, $id) {
+        $info = $this->crudInfo();
+        $info['item'] = Test::findOrFail($id);
+        $info['data'] = $request->all();
+
+
+        if ($request->subject_id === "-1") {
+            //all option and included childern
+            if ($request->include_sub_chapters) {
+                $childrenChapterIds = Chapter::with('children')
+                    ->where('subject_id', $request->subject_id)->pluck('id')->toArray();
+
+
+                $questionIds = Question::whereHas('chapter', function ($q) use ($request) {
+                    $q->where('subject_id', $request->subject_id);
+                })
+                    ->whereIn('chapter_id', $childrenChapterIds)
+                    ->InRandomOrder()
+                    ->limit($request->get('count', 5))
+                    ->pluck('id')->toArray();
+            } else {
+                $questionIds = Question::whereHas('chapter', function ($q) use ($request) {
+                    $q->where('subject_id', $request->subject_id);
+                })
+                    ->InRandomOrder()
+                    ->limit($request->get('count', 5))
+                    ->pluck('id')->toArray();
+            }
+        } else {
+            $chapter = Chapter::findOrFail($request->chapter_id);
+            $searchChapterIds = [$request->chapter_id];
+            if ($request->include_sub_chapters) {
+                $subChapterIds = $chapter->children->pluck('id')->toArray();
+
+                $searchChapterIds = array_merge($searchChapterIds, $subChapterIds);
+            }
+
+
+            $questionIds = Question::whereIn('chapter_id', $searchChapterIds)
+                ->InRandomOrder()
+                ->limit($request->get('count', 5))->pluck('id')->toArray();
+            //            $mainQuestions = $questionIds->where('chapter_id',$request->chapter_id)->get();
+        }
+        if ($request->random_order) {
+            shuffle($questionIds);
+        }
+        $info['test'] = $info['item']->questions()->sync($questionIds, false);
+        return redirect()->route('tests.edit', $id)
+            ->with('info', 'Question added successfully.');
+    }
 }

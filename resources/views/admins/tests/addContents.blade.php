@@ -23,15 +23,15 @@
                                     <div class="kt-portlet__head-label">
                                         {{--                                <h3 class="kt-portlet__head-title">Sticky Form Actions <small>try to scroll the page</small></h3>--}}
                                     </div>
-                                    <form action="{{route('addQuestion', $item->id)}}" method="POST">
+                                    <form action="{{route('addQuestions', $item->id)}}" method="POST">
                                         @csrf
                                         @method('POST')
-                                        @isset($subjects)
+                                        @isset($grades)
                                             <input id="grades" type="hidden" value='@json($grades)'>
                                             <div class="row">
-                                                <div class="col-3" id="select_box">
-                                                    <label for="">Grade</label>
-                                                    <select required name="grade_id" id="subject"
+                                                <div class="col-md-4" id="select_box">
+                                                    <label for="selectGrade">Grade</label>
+                                                    <select required name="grade_id" id="selectGrade"
                                                             class="form-control">
                                                         <option selected value="{{null}}">Choose Grade</option>
                                                         @foreach($grades as $grade)
@@ -39,16 +39,32 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="col-3">
-                                                    <label for="chapter" class="form-label">Subject</label>
+                                                <div class="col-md-4">
+                                                    <label for="subject" class="form-label">Subject</label>
                                                     <select required class="form-control" name="subject_id"
                                                             id="subject">
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="" class="form-label">Number of Questions</label>
+                                                    <input type="number" name="count_question" class="form-control"
+                                                           placeholder="Enter No of question"
+                                                           id="question" min="1" max="100">
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-4">
+                                                    <label for="random-order" class="form-label">Random Order</label>
+                                                    <select required class="form-control" name="random_order"
+                                                            id="random-order">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="float-right">
-                                                <button class="btn btn-primary" type="submit">Submit
+                                                <button class="btn btn-primary" type="submit">Pick
                                                 </button>
                                             </div>
                                         @endisset
@@ -64,4 +80,27 @@
     </div>
 </div>
 @push('scripts')
+    <script>
+        $(document).ready(function () {
+            let grades = JSON.parse($("#grades").val());
+
+            $(document).on('change', '#selectGrade', function () {
+                let gradeId = $(this).val();
+
+                let index = grades.findIndex(item => item.id == gradeId);
+
+                let grade = grades[index];
+
+                if (index != -1) {
+                    $("#subject").empty();
+                    $("#subject").append(`<option>Select Subject</option>`);
+                    $.each(grade.subjects, function (index, data) {
+                        $('select[name="subject_id"]').append('<option value="' + data.id + '">' + data.name + '</option>');
+                    })
+                } else {
+                    $('#subject').empty();
+                }
+            })
+        });
+    </script>
 @endpush
