@@ -12,7 +12,7 @@ class Test extends Model
     protected $guarded = ['id'];
 
     public function grade(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Grade::class);
     }
 
     public function questions()

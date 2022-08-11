@@ -103,6 +103,7 @@ class SubjectController extends BaseController
         $info = $this->crudInfo();
         $info['item'] = Subject::findOrFail($id);
         $info['grades'] = Grade::all();
+        $info['editSubject'] = '';
         return view($this->editResource(), $info);
     }
 

@@ -50,6 +50,7 @@ Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () 
     Route::resource('questions', \App\Http\Controllers\Admin\QuestionController::class);
     Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
     Route::resource('subjects', \App\Http\Controllers\Admin\SubjectController::class);
+
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {

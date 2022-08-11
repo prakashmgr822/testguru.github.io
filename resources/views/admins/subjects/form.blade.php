@@ -8,7 +8,7 @@
             @endforeach
         </select>
     </div>
-    @if(isset($item))
+    @if(isset($editSubject))
     <div class="col-6">
         <label for="">Subject Name</label>
         <input type="text" name="name" value="{{$item->name}}" class="form-control">
