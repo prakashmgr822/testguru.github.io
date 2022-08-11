@@ -23,7 +23,7 @@ class Grade extends Model
 
     public function subjects()
     {
-        return $this->hasMany(Test::class);
+        return $this->hasMany(Subject::class);
     }
 
 }

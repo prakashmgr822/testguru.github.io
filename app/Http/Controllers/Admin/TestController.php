@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Grade;
+use App\Models\Question;
+use App\Models\Subject;
 use App\Models\Test;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -147,5 +149,33 @@ class TestController extends BaseController
         $test = Test::findOrFail($id);
         $test->delete();
         return redirect()->route($this->indexRoute())->with('success', 'Test Deleted Successfully.');
+    }
+
+    public function addQuestion(Request $request, $id) {
+        $info = $this->crudInfo();
+        $info['item'] = Test::findOrFail($id);
+        $info['data'] = $request->all();
+
+
+        if ($request->subject_id === "-1") {
+                $questionIds = Question::whereHas('subject', function ($q) use ($request) {
+                    $q->where('grade_id', $request->grade_id);
+                })
+                    ->InRandomOrder()
+                    ->limit($request->get('count_question', 5))
+                    ->pluck('id')->toArray();
+        } else {
+            $searchSubjectIds = [$request->subject_id];
+
+            $questionIds = Question::whereIn('subject_id', $searchSubjectIds)
+                ->InRandomOrder()
+                ->limit($request->get('count_question', 5))->pluck('id')->toArray();
+        }
+        if ($request->random_order) {
+            shuffle($questionIds);
+        }
+        $info['test'] = $info['item']->questions()->sync($questionIds, false);
+        return redirect()->route('tests.edit', $id)
+            ->with('info', 'Question added successfully.');
     }
 }
