@@ -19,6 +19,15 @@
             <option value="4" {{old('answer',$item->answer)=="4"?"selected":""}}>Option D</option>
         </select>
     </div>
+    <div class="col-6">
+        <label class="col-form-label">Subject</label>
+        <select name="subject_id" id="" class="form-control">
+            <option value="" selected>Please Choose the Subject</option>
+            @foreach($subjects as $subject)
+                <option value="{{$subject->id}}">{{$subject->name}}</option>
+            @endforeach
+        </select>
+    </div>
 </div>
 <div class="form-group row">
     <div class="col-lg-6">

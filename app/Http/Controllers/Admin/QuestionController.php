@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -68,6 +69,7 @@ class QuestionController extends BaseController
     public function create()
     {
         $info = $this->crudInfo();
+        $info['subjects'] = Subject::all();
         return view($this->createResource(), $info);
     }
 

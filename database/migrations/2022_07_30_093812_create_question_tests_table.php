@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('question_id')->nullable();
             $table->unsignedBigInteger('test_id')->nullable();
+
             $table->timestamps();
 
             $table->foreign('question_id')->references('id')
@@ -24,6 +25,7 @@ return new class extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade')
                 ->onUpdate('cascade');
+
         });
     }
 

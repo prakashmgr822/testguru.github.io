@@ -15,5 +15,10 @@ class Subject extends Model
     {
         return $this->belongsTo(Grade::class);
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }
 

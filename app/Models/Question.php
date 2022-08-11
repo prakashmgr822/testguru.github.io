@@ -15,4 +15,9 @@ class Question extends Model
     {
         return $this->belongsToMany(Test::class, 'question_tests')->withTimestamps();
     }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }
