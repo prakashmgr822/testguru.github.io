@@ -111,14 +111,19 @@ class TestController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $info = $this->crudInfo();
         $info['item'] = Test::with('questions')->findOrFail($id);
         $info['grades'] = Grade::with('subjects')->get();
+
+//        if ($request->all()) {
+//            dd($request->all());
+//        }
 
         return view($this->editResource(), $info);
     }
@@ -157,24 +162,21 @@ class TestController extends BaseController
         $info['data'] = $request->all();
 
 
-        if ($request->subject_id === "-1") {
+        if ($request->subject_id) {
                 $questionIds = Question::whereHas('subject', function ($q) use ($request) {
                     $q->where('grade_id', $request->grade_id);
                 })
                     ->InRandomOrder()
                     ->limit($request->get('count_question', 5))
                     ->pluck('id')->toArray();
-        } else {
-            $searchSubjectIds = [$request->subject_id];
-
-            $questionIds = Question::whereIn('subject_id', $searchSubjectIds)
-                ->InRandomOrder()
-                ->limit($request->get('count_question', 5))->pluck('id')->toArray();
         }
         if ($request->random_order) {
             shuffle($questionIds);
         }
-        $info['test'] = $info['item']->questions()->sync($questionIds, false);
+        $info['item']->grade_id = $request->grade_id;
+        $info['item']->update();
+
+        $info['item']->questions()->sync($questionIds, false);
         return redirect()->route('tests.edit', $id)
             ->with('info', 'Question added successfully.');
     }

@@ -93,7 +93,7 @@
 
                 if (index != -1) {
                     $("#subject").empty();
-                    $("#subject").append(`<option>Select Subject</option>`);
+                    $("#subject").append(`<option value="">Select Subject</option>`);
                     $.each(grade.subjects, function (index, data) {
                         $('select[name="subject_id"]').append('<option value="' + data.id + '">' + data.name + '</option>');
                     })
