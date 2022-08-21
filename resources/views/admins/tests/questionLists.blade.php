@@ -22,17 +22,27 @@
                 <td class="text-center">N/A</td>
                 <td class="text-center">{{$question->subject->name}}</td>
                 <td class="text-center">{!! $question->question !!}</td>
-                <td class="text-center"><span class="fas fa-times-circle close" style="cursor: pointer;"></span></td>
+                <td class="text-center">
+                    <a target="_blank" href="{{route('questions.edit',$question->id)}}" class="btn btn-sm btn-clean btn-icon btn-hover-danger">
+                        <i class="fas fa-edit" style="font-size: 17px"></i></a>
+                    <form class="d-inline" action="{{ route('questionDelete',['question_id' => $question->id, 'test_id' => $item->id]) }}"
+                          method="POST" onclick="return confirm('Are you sure?')">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-clean btn-icon">
+                            <i class="fas fa-times-circle close " style="font-size: 20px; color: black"></i></button>
+                    </form>
+                </td>
             </tr>
         @endforeach
     @endif
     </tbody>
 </table>
 
-@push('scripts')
-    <script>
-        $(document).on('click', '.close', function () {
-            $(this).parent().parent().remove();
-        })
-    </script>
-@endpush
+{{--@push('scripts')--}}
+{{--    <script>--}}
+{{--        $(document).on('click', '.close', function () {--}}
+{{--            $(this).parent().parent().remove();--}}
+{{--        })--}}
+{{--    </script>--}}
+{{--@endpush--}}

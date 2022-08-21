@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Grade;
 use App\Models\Question;
+use App\Models\QuestionTest;
 use App\Models\Subject;
 use App\Models\Test;
 use Carbon\Carbon;
@@ -56,8 +57,15 @@ class TestController extends BaseController
                         return $data->created_at->diffForHumans();
                 })
                 ->addColumn('action', function ($data) {
+
+                    $examLink = '<a target="_blank" href="' . route("test-exam", ['id' => $data->id]) . '"
+                                   class="btn btn-sm btn-clean btn-icon btn-hover-info"><i
+                                   class="fa fa-question-circle"></i></a>';
                     return view('templates.index_actions', [
-                        'id' => $data->id, 'route' => $this->route, 'hideShow' => true
+                        'id' => $data->id, 'route' => $this->route, 'hideShow' => true,
+                        'actions' => [
+                            $examLink
+                        ]
                     ])->render();
                 })
                 ->rawColumns(['action', 'description', 'exam_duration', 'created_at'])
@@ -179,5 +187,15 @@ class TestController extends BaseController
         $info['item']->questions()->sync($questionIds, false);
         return redirect()->route('tests.edit', $id)
             ->with('info', 'Question added successfully.');
+    }
+
+    public function deleteQuestion($question_id, $test_id)
+    {
+        $question = QuestionTest::where('question_id' , '=',$question_id);
+        $question->where('test_id', '=', $test_id);
+        $question->delete();
+
+        return redirect()->back()
+            ->with('info', 'Question deleted successfully.');
     }
 }

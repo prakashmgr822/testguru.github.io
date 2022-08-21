@@ -51,7 +51,12 @@ Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () 
     Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
     Route::post('addQuestions/{id}', [\App\Http\Controllers\Admin\TestController::class, 'addQuestion'])->name('addQuestions');
     Route::resource('subjects', \App\Http\Controllers\Admin\SubjectController::class);
+    Route::delete('questions/{question_id}/{test_id}', [\App\Http\Controllers\Admin\TestController::class, 'deleteQuestion'])->name('questionDelete');
 
+});
+
+Route::group(['prefix' => 'exam'], function () {
+    Route::get('/online/test/{id}', [\App\Http\Controllers\Admin\ExamController::class, 'examTest'])->name('test-exam');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {

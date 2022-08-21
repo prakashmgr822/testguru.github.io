@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+html, body{
+    width:100%;
+}
+*{
+    font-family:'Poppins', sans-serif;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+ /*Handle*/
+::-webkit-scrollbar-thumb {
+    background: #f4f4f4;
+    border-radius: 10px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+.test-title{
+    font-weight: bold;
+    color: #007BFF;
+}
+.test-date{
+    color: #B1AFB9;
+}
+a p{
+    color: black;
+}
+.time-remaining{
+    text-align: justify;  /* For Edge */
+    text-align-last: right;
+    color: #007BFF;
+}
+.list-group-item:hover{
+    background: #17A2B8;
+    color: white;
+    cursor: pointer;
+
+}
+
+.active{
+    background: #17A2B8;
+    color: white;
+
+}
+.submit-button{
+    text-align: justify;  /* For Edge */
+    text-align-last: right;
+    /*margin-top: -1rem;*/
+}
+.btn-success{
+    font-size: 1.5rem!important;
+    border-radius: 50% !important;
+}
+.fa-check{
+    font-weight: lighter;
+}
+.hint{
+    background-color: #198754!important;
+    border: #198754!important;
+}
+.card-footer a{
+    text-decoration: none;
+}
+.result{
+    pointer-events: none;
+}
+.badge {
+ background-color: #007bff;
+    border-radius: 15px!important;
+}
+.in{
+    pointer-events: none!important;
+}
+
+@media only screen and (max-width: 600px) {
+    .results-holder p{
+        font-size: 0.8rem !important;
+    }
+    #hint p img{
+        width: 100%!important;
+
+    }
+    #hint p{
+        width: 100%!important;
+    }
+    .list-group-flush .list-group-item{
+        padding:1rem!important;
+    }
+    .report-large{
+        display: none;
+    }
+}
+@media only screen and (min-width: 800px) {
+    #question p img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 400px !important;
+    }
+    .question-image img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 400px;
+    }
+    .report-small{
+        display: none;
+    }
+}
+.welcome{
+    background-color: #f0f0f0;
+    padding-top: 10rem!important;
+    padding-bottom: 16rem!important;
+    margin: 0!important;
+}

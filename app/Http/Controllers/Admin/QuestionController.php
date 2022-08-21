@@ -116,6 +116,7 @@ class QuestionController extends BaseController
     {
         $info = $this->crudInfo();
         $info['item'] = Question::findOrFail($id);
+        $info['subjects'] = Subject::all();
         return view($this->editResource(), $info);
     }
 
