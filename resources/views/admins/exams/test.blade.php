@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="stylesheet" href="{{asset('exam/css/style.css')}}">
+    <link rel="stylesheet" href="libs/style.css" />
+
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">--}}
@@ -18,6 +20,7 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
 </script>
+<script src="libs/cute-alert.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -95,22 +98,21 @@
         $('#hint').hide();
 
         function showConfirm() {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit it!'
+            cuteAlert({
+                type: "question",
+                title: "Confirm Title",
+                message: "Confirm Message",
+                confirmText: "Okay",
+                cancelText: "Cancel"
             }).then((result) => {
                 if (answers.length > 0) {
                     if (result.isConfirmed) {
-                        Swal.fire(
-                            'Submitted!',
-                            'Your answers has been submitted.',
-                            'success',
-                        ).then((result) => {
+                        cuteAlert({
+                            type: "success",
+                            title: "Success Title",
+                            message: "Success Message",
+                            buttonText: "Okay"
+                        }).then((result) => {
                             if (result.isConfirmed) {
                                 $('#answerTestId').val( {{$test['id']}});
                                 $('#answers').val(JSON.stringify(answers));
