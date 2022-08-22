@@ -75,10 +75,9 @@
         </div>
         <div class="col-5">
             <div class="submit-button">
-                <button class="btn btn-success "  type="button" onclick="showConfirm()">
-                    {{--                        <i class="material-icons pmd-sm">check</i>--}}
+                <a class="btn btn-success"  type="button" onclick="showConfirm()">
                     <i class="fa fa-check"></i>
-                </button>
+                </a>
             </div>
         </div>
         {{--            <div class="col-5">--}}
@@ -122,6 +121,145 @@
             })
 
         }
+
+        //****time
+
+        $(document).ready(function () {
+            //declarations
+            var timeAlertShwon = false;
+            var examTotalTime = $("#input-exam-time").val();//minutes
+            // alert(examTotalTime)
+            var examDate = '{{$test['target_date']}}';
+            console.log(examDate);
+
+            var examDateTime = new Date(examDate);
+            var currentDateTime = new Date();
+
+            var diffMs = (examDateTime - currentDateTime); // milliseconds between now & exam
+            var minutes = Math.floor((diffMs / 1000) / 60);
+            var seconds = Math.floor((diffMs / 1000) - minutes * 60);
+
+
+            checkExamTime();
+
+            function checkExamTime() {
+                if (minutes > 0) {
+                    // Exam Not Started yet
+                    $(document).ready(function () {
+                        $('#examWelcomeModal').modal('show', {backdrop: 'static', keyboard: false});
+                        // let remainingSeconds = examTotalTime * 60 - Math.abs(seconds);
+                        let timer2 = "" + minutes + ":" + seconds;
+
+                        let interval = setInterval(function () {
+
+                            let timer = timer2.split(':');
+                            //by parsing integer, I avoid all extra string processing
+                            let minutes = parseInt(timer[0], 10);
+                            let seconds = parseInt(timer[1], 10);
+                            --seconds;
+                            minutes = (seconds < 0) ? --minutes : minutes;
+                            if (minutes < 1) {
+                                clearInterval(interval);
+                                $('#examWelcomeModal').modal('hide');
+                                // registerModal();
+                            }
+                            if (minutes === 2 && seconds === 0) timeRemainingAlert();
+                            seconds = (seconds < 0) ? 59 : seconds;
+                            seconds = (seconds < 10) ? '0' + seconds : seconds;
+                            minutes = (minutes < 10) ? minutes : minutes;
+                            $('#welcomeMessage').html("Exam starting in " + minutes + " minutes : " + seconds + " seconds");
+                            timer2 = minutes + ':' + seconds;
+                        }, 1000);
+
+                        //when modal opens
+                        $('#examWelcomeModal').on('shown.bs.modal', function (e) {
+                            $("#bodyContent").css({opacity: 0.0});
+                        });
+
+                        //when modal closes
+                        $('#examWelcomeModal').on('hidden.bs.modal', function (e) {
+                            $("#bodyContent").css({opacity: 1.0});
+                        });
+                    });
+                } else {
+                    //Exam started
+
+                    if (minutes > -examTotalTime) {
+                        //Exam started but not ended
+                        let remaining = examTotalTime - Math.abs(minutes);
+                        let timer2 = "" + remaining + ":" + seconds;
+                        let interval = setInterval(function () {
+
+                            let timer = timer2.split(':');
+                            //by parsing integer, I avoid all extra string processing
+                            let minutes = parseInt(timer[0], 10);
+                            let seconds = parseInt(timer[1], 10);
+                            --seconds;
+                            minutes = (seconds < 0) ? --minutes : minutes;
+                            if (minutes < 0) {
+                                clearInterval(interval);
+                                timeUp();
+                            }
+                            if (minutes === 2 && seconds === 0) timeRemainingAlert();
+                            seconds = (seconds < 0) ? 59 : seconds;
+                            seconds = (seconds < 10) ? '0' + seconds : seconds;
+                            $('#countdownTimer').html('<strong>Time Remaining: ' + minutes + ':' + seconds + '</strong>');
+                            // }
+                            timer2 = minutes + ':' + seconds;
+                        }, 1000);
+                    } else {
+                        //Exam started & ended already
+                        $(document).ready(function () {
+
+                            //no need registration for this
+                            $('#examWelcomeModal').modal('show');
+                            {{--$('#welcomeMessage').innerHTML("{{$test['description']}}");--}}
+                            $('#examWelcomeModalButton').click(function () {
+                                $('#examWelcomeModal').modal('hide');
+                                // let remainingSeconds = examTotalTime * 60 - Math.abs(seconds);
+
+                                let timer2 = examTotalTime + ":00";
+                                let interval = setInterval(function () {
+
+                                    let timer = timer2.split(':');
+                                    //by parsing integer, I avoid all extra string processing
+                                    let minutes = parseInt(timer[0], 10);
+                                    let seconds = parseInt(timer[1], 10);
+                                    --seconds;
+                                    minutes = (seconds < 0) ? --minutes : minutes;
+                                    if (minutes < 0) {
+                                        clearInterval(interval);
+                                        timeUp();
+
+                                    }
+
+                                    if (minutes === 2 && seconds === 0) timeRemainingAlert();
+                                    seconds = (seconds < 0) ? 59 : seconds;
+                                    seconds = (seconds < 10) ? '0' + seconds : seconds;
+                                    //minutes = (minutes < 10) ?  minutes : minutes;
+                                    $('#countdownTimer').html('<strong>Time Remaining: ' + minutes + ':' + seconds + '</strong>');
+                                    timer2 = minutes + ':' + seconds;
+                                }, 1000);
+                            });
+                        });
+                    }
+                }
+            }
+
+            function timeRemainingAlert() {
+                if (!timeAlertShwon) {
+                    var audio = new Audio('{{asset("sounds/alert.mp3")}}');
+                    audio.volume = 0.2;
+                    audio.play();
+                    audio.onended = function () {
+                        alert("Only 2 minutes Remaining!");
+                        timeAlertShwon = true;
+                    };
+
+                }
+            }
+
+        });
 
 
 
