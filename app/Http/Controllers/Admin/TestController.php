@@ -83,6 +83,7 @@ class TestController extends BaseController
     public function create()
     {
         $info = $this->crudInfo();
+        $info['grades'] = Grade::all();
         return view($this->createResource(), $info);
     }
 

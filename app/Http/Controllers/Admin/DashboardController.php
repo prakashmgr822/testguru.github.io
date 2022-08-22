@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chapter;
+use App\Models\Grade;
+use App\Models\Question;
+use App\Models\Subject;
+use App\Models\Test;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -19,7 +24,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admins.home');
+        $data['grades'] = Grade::all()->count();
+        $data['questions'] = Question::all()->count();
+        $data['tests'] = Test::all()->count();
+        return view('admins.home', $data);
 
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Test;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -14,7 +15,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('students.home');
+        $data['tests'] = Test::where('grade_id', auth('web')->user()->grade_id)->count();
+        return view('students.home', $data);
     }
 
     /**

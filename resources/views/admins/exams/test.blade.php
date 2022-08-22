@@ -4,14 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/exam/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/exam/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/exam/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/exam/favicon/site.webmanifest">
     <link rel="stylesheet" href="{{asset('exam/css/style.css')}}">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">--}}
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -38,7 +34,7 @@
             <p id="questionNumber"></p>
         </div>
         <div class="col-auto time-remaining">
-            <img src="{{asset('exam/img/reminder.png')}}" width="25" height="25"> <b id="countdownTimer">Time
+            <b id="countdownTimer">Time
                 Remaining: --:--</b>
         </div>
     </div>
@@ -52,7 +48,7 @@
             </div>
 
         </div>
-        <ul class="list-group list-group-flush optionBox">
+        <ul class="list-group list-group-flush optionBox ">
             <li class="list-group-item opt" id="option1Row">A. <span id="option1Text"></span></li>
             <li class="list-group-item opt" id="option2Row">B. <span id="option2Text"></span></li>
             <li class="list-group-item opt" id="option3Row">C. <span id="option3Text"></span></li>
@@ -61,33 +57,249 @@
         <div class="card-footer py-3">
             <div class="row">
                 <div class="col">
-                    <a href="#" id="prevButton"><img src="{{asset('exam/img/left.png')}}" width="25" height="25">
-                        <b
-                            style="color: #007BFF;">Prev</b></a>
+                    <a href="#" id="prevButton"><button class="btn btn-primary">Prev</button></a>
                 </div>
                 <div class="col-auto">
-                    <a href="#" id="skip"><b style="color: #007BFF;">Skip</b></a>
+                    <a href="#" id="skip"><button class="btn btn-danger">Skip</button></a>
                 </div>
                 <div class="col" style="text-align: justify; text-align-last: right;">
-                    <a href="#" id="nextButton"><b style="color: #007BFF;">Next</b><img
-                            src="{{asset('exam/img/right.png')}}"
-                            width="25" height="25"></a>
+                    <a href="#" id="nextButton"><button class="btn btn-primary">Next</button></a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-7"></div>
-    <div class="col-5">
-        <i class=""></i>
-        <div class="submit-button">
-            <button class="btn pmd-btn-fab pmd-ripple-effect btn-success" type="button" onclick="showConfirm()">
-                {{--                        <i class="material-icons pmd-sm">check</i>--}}
-                <i class="fa fa-check"></i>
-            </button>
+
+    <div class="row mt-4">
+        <div class="col-7">
+            <p class="pt-2">Best of luck</p>
         </div>
-    </div>
+        <div class="col-5">
+            <div class="submit-button">
+                <button class="btn btn-success "  type="button" onclick="showConfirm()">
+                    {{--                        <i class="material-icons pmd-sm">check</i>--}}
+                    <i class="fa fa-check"></i>
+                </button>
+            </div>
+        </div>
+        {{--            <div class="col-5">--}}
+        {{--                <p id="hint" class="mt-3 watch"></p>--}}
+        {{--            </div>--}}
     </div>
 </div>
+
+
+
+<section>
+    <script>
+
+        $('#hint').hide();
+
+        function showConfirm() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+            }).then((result) => {
+                if (answers.length > 0) {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Submitted!',
+                            'Your answers has been submitted.',
+                            'success',
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#answerTestId').val( {{$test['id']}});
+                                $('#answers').val(JSON.stringify(answers));
+                                $('#answersForm').submit();
+                            }
+                        })
+                    }
+                }
+            })
+
+        }
+
+
+
+        var currentQuestionIndex = 0;
+
+        function selectRow(option) {
+            highlightQuestionBox(currentQuestionIndex);
+            $("#option" + option + "Row").addClass("active");
+        }
+
+        function highlightQuestionBox(index) {
+            $("#questionBox" + index).addClass("active");
+        }
+
+        function dehighlightQuestionBox(index) {
+            $("#questionBox" + index).removeClass("active");
+        }
+
+        //get initial data from laravel
+        var test = {!! json_encode($test)!!};
+
+        var questions = {!! json_encode($questions) !!};
+        var answers = new Array(questions.length);
+
+        for (let i = 0; i < answers.length; i++) {
+            answers[i] = "";
+        }
+        updateContent();
+
+        // JSON.stringify(questions
+
+        $('#nextButton').click(
+            function () {
+                if (currentQuestionIndex < questions.length - 1) {
+                    if (answers[currentQuestionIndex] === "") {
+                        // alert("Please select an option");
+                        Swal.fire({
+                            title: '<p class="text-danger">Please select an option</p>',
+                            icon: 'warning',
+                        })
+                    } else {
+                        currentQuestionIndex++;
+                        updateContent();
+                        if($('.opt').hasClass("active")) {
+                            $('#hint').html(hintData);
+                            $('#hint').show();
+                        }else
+                        {
+                            $('#hint').hide();
+                        }
+                    }
+                } else {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, submit it!'
+                    }).then((result) => {
+                        if (answers.length > 0) {
+                            if (result.isConfirmed) {
+                                Swal.fire(
+                                    'Submitted!',
+                                    'Your answers has been submitted.',
+                                    'success',
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $('#answerTestId').val( {{$test['id']}});
+                                        $('#answers').val(JSON.stringify(answers));
+                                        $('#answersForm').submit();
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        );
+
+
+        $('#prevButton').click(
+            function () {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateContent();
+                    $('#hint').html(hintData)
+                }
+            }
+        );
+
+        //options 1 to 4
+        for (let i = 1; i <= 4; i++) {
+            let rowId = '#option' + i + 'Row';
+            let selectedClass = "active";
+
+            $(rowId).click(
+                function () {
+                    if ($(rowId).hasClass(selectedClass)) {
+                        removeSelected();
+                        $(rowId).removeClass(selectedClass);
+                        answers[currentQuestionIndex] = undefined;
+                        dehighlightQuestionBox(currentQuestionIndex);
+                    } else {
+                        removeSelected();
+                        selectRow(i.toString());
+                        answers[currentQuestionIndex] = i.toString();
+                    }
+                }
+            );
+        }
+
+        function removeSelected() {
+            for (let i = 1; i <= 4; i++) {
+
+                let rowId = '#option' + i + 'Row';
+                let selectedClass = "active";
+
+                $(rowId).removeClass(selectedClass);
+            }
+        }
+
+        $(document).ready(function () {
+            $('.opt').click(function () {
+                $('#hint').html(hintData);
+                $('#hint').show();
+            });
+        });
+
+        $('#skip').click(
+            function () {
+                if (currentQuestionIndex < questions.length - 1) {
+                    answers[currentQuestionIndex] = ""
+                    currentQuestionIndex++;
+                    updateContent();
+                }
+            });
+        var hintData;
+        function updateContent() {
+            updateAnswer();
+            var questionNumber = "Question <strong>" + (currentQuestionIndex + 1) + " of " + questions.length + "</strong>";
+            for (let i = 0; i < questions.length; i++) {
+                $("#questionBox" + i).removeClass("questionBoxActive");
+            }
+            $("#questionBox" + currentQuestionIndex).addClass("questionBoxActive");
+
+            $('#questionNumber').html(questionNumber);
+            $('#question').html(questions[currentQuestionIndex]['question']);
+            hintData = (questions[currentQuestionIndex]['hint']);
+
+            for (let i = 1; i <= 4; i++) {
+                let optionTextId = '#option' + i + 'Text';
+                let optionValue = questions[currentQuestionIndex]['option_' + i];
+                optionValue = optionValue.replaceAll("<p>", "");
+                optionValue = optionValue.replaceAll("</p>", "");
+                $(optionTextId).html(optionValue);
+            }
+        }
+
+        function updateAnswer() {
+            removeSelected();
+
+            var answer = answers[currentQuestionIndex];
+            if (answer === "1") {
+                selectRow("1");
+            } else if (answer === "2") {
+                selectRow("2");
+            } else if (answer === "3") {
+                selectRow("3");
+            } else if (answer === "4") {
+                selectRow("4");
+            }
+        }
+
+
+    </script>
+    <input type="hidden" id="input-exam-time" value="{{$test->exam_duration??60}}">
+</section>
 </body>
 </html>

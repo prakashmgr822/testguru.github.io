@@ -21,7 +21,7 @@
 
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand"><b style="color: #007BFF; ">{{$title}}</b></a>
+        <a class="navbar-brand"><b style="color: black;">{{$title}}</b></a>
 
 {{--        <form class="d-flex" action="{{route('logout')}}" method="POST">--}}
 {{--            @csrf--}}

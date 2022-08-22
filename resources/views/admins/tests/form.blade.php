@@ -37,6 +37,18 @@
         </div>
     </div>
     <div class="form-group row">
+
+        <div class="col-6">
+            <label for="">Grade</label>
+            <select name="grade_id" id="" class="form-control">
+                <option value="{{null}}">None</option>
+                @foreach($grades as $grade)
+                    <option value="{{ $grade->id }}" {{ old('grade_id',$item->grade_id)==$grade->id?'selected':'' }}>{{$grade->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
         <div class="col-12 mt-4">
             <label for="">Description</label>
             <textarea name="description" rows="4"

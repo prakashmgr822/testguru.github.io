@@ -29,7 +29,7 @@
                                     <div class="float-right">
 
                                         <a href="{{route($route.'create')}}"
-                                           class="btn btn-primary float-right">
+                                           class="btn btn-dark float-right">
                                             <i class="fa fa-plus"></i>
                                             <span class="kt-hidden-mobile">Add</span>
                                         </a>

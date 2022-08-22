@@ -40,7 +40,7 @@ a p{
 .time-remaining{
     text-align: justify;  /* For Edge */
     text-align-last: right;
-    color: #007BFF;
+    color: black;
 }
 .list-group-item:hover{
     background: #17A2B8;
@@ -60,8 +60,7 @@ a p{
     /*margin-top: -1rem;*/
 }
 .btn-success{
-    font-size: 1.5rem!important;
-    border-radius: 50% !important;
+    font-size: 3rem!important;
 }
 .fa-check{
     font-weight: lighter;
