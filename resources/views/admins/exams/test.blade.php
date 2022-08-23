@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="stylesheet" href="{{asset('exam/css/style.css')}}">
-    <link rel="stylesheet" href="libs/style.css" />
+    <link rel="stylesheet" href="{{asset('cute-alert/style.css')}}" />
 
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -20,7 +20,7 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
 </script>
-<script src="libs/cute-alert.js"></script>
+<script src="{{asset('cute-alert/cute-alert.js')}}"></script>
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -90,6 +90,30 @@
     </div>
 </div>
 
+<div class="modal hide fade in" data-keyboard="false" data-backdrop="static" id="examWelcomeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Welcome</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+{{--                    @if($test->getImage())--}}
+{{--                        <img class='mx-auto d-block' width='240' src="{{$test->getImage()?? ''}}" alt="image"/>--}}
+{{--                    @endif--}}
+                </div>
+                <div class="form-group" id="welcomeMessage">
+
+                    <pre style="font-family: Sans-serif">{!! $test['description'] !!}</pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="examWelcomeModalButton" type="button" class="btn btn-primary btn-block">Start</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <section>
@@ -124,6 +148,167 @@
             })
 
         }
+
+        $(document).ready(function () {
+            //declarations
+            var timeAlertShwon = false;
+            var examTotalTime = $("#input-exam-time").val();//minutes
+            // alert(examTotalTime)
+            var examDate = '{{$test['target_date']}}';
+
+            var examDateTime = new Date(examDate);
+            var currentDateTime = new Date();
+
+            var diffMs = (examDateTime - currentDateTime); // milliseconds between now & exam
+            var minutes = Math.floor((diffMs / 1000) / 60);
+            var seconds = Math.floor((diffMs / 1000) - minutes * 60);
+
+
+
+            checkExamTime();
+
+            function checkExamTime() {
+                if (minutes > 0) {
+                    // Exam Not Started yet
+                    $(document).ready(function () {
+                        $('#examWelcomeModal').modal('show',{backdrop: 'static', keyboard: false});
+                        // let remainingSeconds = examTotalTime * 60 - Math.abs(seconds);
+                        let timer2 = "" + minutes + ":" + seconds;
+
+                        let interval = setInterval(function () {
+
+                            let timer = timer2.split(':');
+                            //by parsing integer, I avoid all extra string processing
+                            let minutes = parseInt(timer[0], 10);
+                            let seconds = parseInt(timer[1], 10);
+                            --seconds;
+                            minutes = (seconds < 0) ? --minutes : minutes;
+                            if (minutes < 1) {
+                                clearInterval(interval);
+                                $('#examWelcomeModal').modal('hide');
+                                // registerModal();
+                            }
+                            if (minutes === 2 && seconds === 0) timeRemainingAlert();
+                            seconds = (seconds < 0) ? 59 : seconds;
+                            seconds = (seconds < 10) ? '0' + seconds : seconds;
+                            minutes = (minutes < 10) ? minutes : minutes;
+                            $('#welcomeMessage').html("Exam starting in " + minutes + " minutes : " + seconds + " seconds");
+                            timer2 = minutes + ':' + seconds;
+                        }, 1000);
+
+                        //when modal opens
+                        $('#examWelcomeModal').on('shown.bs.modal', function (e) {
+                            $("#bodyContent").css({opacity: 0.0});
+                        });
+
+                        //when modal closes
+                        $('#examWelcomeModal').on('hidden.bs.modal', function (e) {
+                            $("#bodyContent").css({opacity: 1.0});
+                        });
+                    });
+                } else {
+                    //Exam started
+
+                    if (minutes > -examTotalTime) {
+                        //Exam started but not ended
+                        let remaining = examTotalTime - Math.abs(minutes);
+                        let timer2 = "" + remaining + ":" + seconds;
+
+                        let interval = setInterval(function () {
+                            let timer = timer2.split(':');
+                            //by parsing integer, I avoid all extra string processing
+                            let minutes = parseInt(timer[0], 10);
+                            let seconds = parseInt(timer[1], 10);
+                            --seconds;
+                            minutes = (seconds < 0) ? --minutes : minutes;
+                            if (minutes < 0) {
+                                clearInterval(interval);
+                                timeUp();
+                            }
+                            if (minutes === 2 && seconds === 0) timeRemainingAlert();
+                            seconds = (seconds < 0) ? 59 : seconds;
+                            seconds = (seconds < 10) ? '0' + seconds : seconds;
+                            $('#countdownTimer').html('<strong>Time Remaining: ' + minutes + ':' + seconds + '</strong>');
+                            // }
+                            timer2 = minutes + ':' + seconds;
+                        }, 1000);
+                    } else {
+                        //Exam started & ended already
+                        $(document).ready(function () {
+
+                            //no need registration for this
+                            $('#examWelcomeModal').modal('show');
+                            {{--$('#welcomeMessage').innerHTML("{{$test['description']}}");--}}
+                            $('#examWelcomeModalButton').click(function () {
+                                $('#examWelcomeModal').modal('hide');
+                                // let remainingSeconds = examTotalTime * 60 - Math.abs(seconds);
+
+                                let timer2 = examTotalTime + ":00";
+                                let interval = setInterval(function () {
+
+                                    let timer = timer2.split(':');
+                                    //by parsing integer, I avoid all extra string processing
+                                    let minutes = parseInt(timer[0], 10);
+                                    let seconds = parseInt(timer[1], 10);
+                                    --seconds;
+                                    minutes = (seconds < 0) ? --minutes : minutes;
+                                    if (minutes < 0) {
+                                        clearInterval(interval);
+                                        timeUp();
+
+                                    }
+
+                                    if (minutes === 2 && seconds === 0) timeRemainingAlert();
+                                    seconds = (seconds < 0) ? 59 : seconds;
+                                    seconds = (seconds < 10) ? '0' + seconds : seconds;
+                                    //minutes = (minutes < 10) ?  minutes : minutes;
+                                    $('#countdownTimer').html('<strong>Time Remaining: ' + minutes + ':' + seconds + '</strong>');
+                                    timer2 = minutes + ':' + seconds;
+                                }, 1000);
+                            });
+                        });
+                    }
+                }
+            }
+
+            {{--function welcomeModalOnline() {--}}
+            {{--    $(document).ready(function () {--}}
+            {{--        $('#examWelcomeModal').modal('show');--}}
+            {{--        $('#welcomeMessage').html("{{$test['description']}}");--}}
+            {{--        //when modal opens--}}
+            {{--        $('#examWelcomeModal').on('shown.bs.modal', function (e) {--}}
+            {{--            $("#bodyContent").css({opacity: 0.0});--}}
+            {{--        });--}}
+
+            {{--        //when modal closes--}}
+            {{--        $('#examWelcomeModal').on('hidden.bs.modal', function (e) {--}}
+            {{--            $("#bodyContent").css({opacity: 1.0});--}}
+            {{--        });--}}
+            {{--    });--}}
+            {{--}--}}
+
+            function timeRemainingAlert() {
+                if (!timeAlertShwon) {
+                    var audio = new Audio('{{asset("sounds/alert.mp3")}}');
+                    audio.volume = 0.2;
+                    audio.play();
+                    audio.onended = function () {
+                        alert("Only 2 minutes Remaining!");
+                        timeAlertShwon = true;
+                    };
+
+                }
+            }
+
+            function timeUp() {
+                $('#timeupModal').modal('show');
+                $('#timeupModalButton').click(function () {
+                    $('#answerTestId').val( {{$test['id']}});
+                    $('#answers').val(JSON.stringify(answers));
+                    $('#answersForm').submit();
+                });
+            }
+        });
 
 
 
@@ -160,9 +345,11 @@
                 if (currentQuestionIndex < questions.length - 1) {
                     if (answers[currentQuestionIndex] === "") {
                         // alert("Please select an option");
-                        Swal.fire({
-                            title: '<p class="text-danger">Please select an option</p>',
-                            icon: 'warning',
+                        cuteAlert({
+                            type: "warning",
+                            title: "Warning Title",
+                            message: "Warning Message",
+                            buttonText: "Okay"
                         })
                     } else {
                         currentQuestionIndex++;
@@ -176,14 +363,11 @@
                         }
                     }
                 } else {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, submit it!'
+                    cuteAlert({
+                        type: "warning",
+                        title: "Warning",
+                        message: "Are you sure?",
+                        buttonText: "Okay"
                     }).then((result) => {
                         if (answers.length > 0) {
                             if (result.isConfirmed) {

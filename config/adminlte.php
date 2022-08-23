@@ -365,12 +365,12 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/cute-alert/select2/4.0.3/js/select2.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                    'location' => '//cdnjs.cloudflare.com/ajax/cute-alert/select2/4.0.3/css/select2.css',
                 ],
             ],
         ],
@@ -380,7 +380,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/cute-alert/Chart.js/2.7.0/Chart.bundle.min.js',
                 ],
             ],
         ],
@@ -400,12 +400,12 @@ return [
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
+                    'location' => '//cdnjs.cloudflare.com/ajax/cute-alert/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/cute-alert/pace/1.0.2/pace.min.js',
                 ],
             ],
         ],
