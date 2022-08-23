@@ -53,6 +53,7 @@ const cuteAlert = ({
       sound.play();
     }
 
+    // console.log(`${img}`);
     const template = `
     <div class="alert-wrapper">
       <div class="alert-frame">
@@ -62,7 +63,7 @@ const cuteAlert = ({
               ? 'alert-close-circle'
               : 'alert-close-default'
           }">X</span>
-          ${img !== '' ? '<img class="alert-img" src="/" ' + src + '/'  + img + '>' : ''}
+          ${img !== '' ? '<img class="alert-img" src="' + window.location.origin + '/public/libs/cute-alert/img/'  + img + '.svg' + '">' : ''}
         </div>
         <div class="alert-body">
           <span class="alert-title">${title}</span>
@@ -148,7 +149,7 @@ const cuteToast = ({ type, title, message, timer = 5000,  vibrate = [], playSoun
       <div>
         <div class="toast-frame">
           <div class="toast-body">
-            <img class="toast-body-img" src="${src}/img/${type}.svg" />'
+            <img class="toast-body-img" src="${src}/cute-alert/img/${type}.svg" />'
             <div class="toast-body-content">
               <span class="toast-title">${title}</span>
               <span class="toast-message">${message}</span>
