@@ -131,14 +131,14 @@
                 cancelText: "Cancel"
             }).then((result) => {
                 if (answers.length > 0) {
-                    if (result.isConfirmed) {
+                    if (result = "confirmed") {
                         cuteAlert({
                             type: "success",
                             title: "Success Title",
                             message: "Success Message",
                             buttonText: "Okay"
                         }).then((result) => {
-                            if (result.isConfirmed) {
+                            if (result = "confirmed") {
                                 $('#answerTestId').val( {{$test['id']}});
                                 $('#answers').val(JSON.stringify(answers));
                                 $('#answersForm').submit();
