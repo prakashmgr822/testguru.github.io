@@ -43,7 +43,7 @@
     </div>
 
     <div class="card" style="margin-top: 0.5rem">
-        <div class="card-header">
+        <div class="card-header" id="qn">
             <div class="row">
                 <div class="col mt-1">
                     <p id="question"></p>
@@ -51,7 +51,7 @@
             </div>
 
         </div>
-        <ul class="list-group list-group-flush optionBox ">
+        <ul class="list-group list-group-flush optionBox " id="opn">
             <li class="list-group-item opt" id="option1Row">A. <span id="option1Text"></span></li>
             <li class="list-group-item opt" id="option2Row">B. <span id="option2Text"></span></li>
             <li class="list-group-item opt" id="option3Row">C. <span id="option3Text"></span></li>
@@ -108,13 +108,19 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="examWelcomeModalButton" type="button" class="btn btn-primary btn-block">Start</button>
+                <button id="examWelcomeModalButton" type="button" class="btn btn-primary btn-block" style="width: 100%">Start</button>
             </div>
         </div>
     </div>
 </div>
 
-
+<form method="post" id="answersForm" action="{{ route("exam.results") }}">
+    @method('POST')
+    {{csrf_field()}}
+    <input id="answerTestId" name="test_id" type="hidden">
+    <input id="answers" name="answers" type="hidden">
+    <input id="user_id" name="user_id" type="hidden" value="{{\auth('web')->user()->id ?? ''}}">
+</form>
 
 <section>
     <script>
@@ -124,7 +130,7 @@
         function showConfirm() {
             cuteAlert({
                 type: "question",
-                img: "success",
+                img: "question",
                 title: "Confirm Title",
                 message: "Confirm Message",
                 confirmText: "Okay",
@@ -172,6 +178,8 @@
                 if (minutes > 0) {
                     // Exam Not Started yet
                     $(document).ready(function () {
+                        $('#qn').css("display", "none");
+                        $('#opn').css("display", "none");
                         $('#examWelcomeModal').modal('show',{backdrop: 'static', keyboard: false});
                         // let remainingSeconds = examTotalTime * 60 - Math.abs(seconds);
                         let timer2 = "" + minutes + ":" + seconds;
@@ -211,6 +219,8 @@
                     //Exam started
 
                     if (minutes > -examTotalTime) {
+                        $('#qn').css("display", "");
+                        $('#opn').css("display", "");
                         //Exam started but not ended
                         let remaining = examTotalTime - Math.abs(minutes);
                         let timer2 = "" + remaining + ":" + seconds;
@@ -317,15 +327,15 @@
 
         function selectRow(option) {
             highlightQuestionBox(currentQuestionIndex);
-            $("#option" + option + "Row").addClass("active");
+            $("#option" + option + "Row").addClass("bg-info");
         }
 
         function highlightQuestionBox(index) {
-            $("#questionBox" + index).addClass("active");
+            $("#questionBox" + index).addClass("bg-info");
         }
 
         function dehighlightQuestionBox(index) {
-            $("#questionBox" + index).removeClass("active");
+            $("#questionBox" + index).removeClass("bg-info");
         }
 
         //get initial data from laravel
@@ -355,7 +365,7 @@
                     } else {
                         currentQuestionIndex++;
                         updateContent();
-                        if($('.opt').hasClass("active")) {
+                        if($('.opt').hasClass("bg-info")) {
                             $('#hint').html(hintData);
                             $('#hint').show();
                         }else
@@ -404,7 +414,7 @@
         //options 1 to 4
         for (let i = 1; i <= 4; i++) {
             let rowId = '#option' + i + 'Row';
-            let selectedClass = "active";
+            let selectedClass = "bg-info";
 
             $(rowId).click(
                 function () {
@@ -426,7 +436,7 @@
             for (let i = 1; i <= 4; i++) {
 
                 let rowId = '#option' + i + 'Row';
-                let selectedClass = "active";
+                let selectedClass = "bg-info";
 
                 $(rowId).removeClass(selectedClass);
             }
@@ -452,9 +462,9 @@
             updateAnswer();
             var questionNumber = "Question <strong>" + (currentQuestionIndex + 1) + " of " + questions.length + "</strong>";
             for (let i = 0; i < questions.length; i++) {
-                $("#questionBox" + i).removeClass("questionBoxActive");
+                $("#questionBox" + i).removeClass("questionBoxbg-info");
             }
-            $("#questionBox" + currentQuestionIndex).addClass("questionBoxActive");
+            $("#questionBox" + currentQuestionIndex).addClass("questionBoxbg-info");
 
             $('#questionNumber').html(questionNumber);
             $('#question').html(questions[currentQuestionIndex]['question']);
@@ -483,6 +493,7 @@
                 selectRow("4");
             }
         }
+
 
 
     </script>

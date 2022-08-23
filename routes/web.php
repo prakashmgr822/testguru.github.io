@@ -57,6 +57,9 @@ Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () 
 
 Route::group(['prefix' => 'exam'], function () {
     Route::get('/online/test/{id}', [\App\Http\Controllers\Admin\ExamController::class, 'examTest'])->name('test-exam');
+    Route::post('/results', [\App\Http\Controllers\Admin\ExamController::class, 'results'])->name('exam.results');
+
+
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
