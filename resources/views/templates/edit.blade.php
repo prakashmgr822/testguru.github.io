@@ -43,12 +43,8 @@
                         </form>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            @yield('add_content')
-                            @yield('form_content1')
-                        </div>
-                    </div>
+                    @yield('add_content')
+                    @yield('form_content1')
                     <!-- /.card -->
 
                 </div>
