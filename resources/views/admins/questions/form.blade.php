@@ -21,7 +21,7 @@
     </div>
     <div class="col-6">
         <label class="col-form-label">Subject</label>
-        <select name="subject_id" id="" class="form-control">
+        <select name="subject_id" id="" class="form-control" required>
             <option value="" selected>Please Choose the Subject</option>
             @foreach($subjects as $subject)
                 <option value="{{$subject->id}}">{{$subject->name}}</option>
