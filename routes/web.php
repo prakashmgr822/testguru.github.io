@@ -39,19 +39,20 @@ Route::group(['prefix' => 'superadmin', 'middleware' => 'auth:superAdmin'], func
     Route::get('/home', [\App\Http\Controllers\SuperAdmin\DashboardController::class, 'index'])->name('superAdmin.home');
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::resource('admins', \App\Http\Controllers\SuperAdmin\AdminController::class);
+    Route::resource('grades', \App\Http\Controllers\SuperAdmin\GradeController::class);
 });
 
 Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () {
     Route::get('/login', [LoginController::class, 'showAdminLoginForm'])->name('admins.login');
     Route::get('home', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admins.home');
     Route::get('/logout', [LoginController::class, 'logout']);
-    Route::resource('grades', \App\Http\Controllers\Admin\GradeController::class);
     Route::resource('students', \App\Http\Controllers\Admin\StudentController::class);
     Route::resource('questions', \App\Http\Controllers\Admin\QuestionController::class);
     Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
     Route::post('addQuestions/{id}', [\App\Http\Controllers\Admin\TestController::class, 'addQuestion'])->name('addQuestions');
     Route::resource('subjects', \App\Http\Controllers\Admin\SubjectController::class);
     Route::delete('questions/{question_id}/{test_id}', [\App\Http\Controllers\Admin\TestController::class, 'deleteQuestion'])->name('questionDelete');
+    Route::resource('marksheets', \App\Http\Controllers\Admin\MarksheetController::class);
 
 });
 

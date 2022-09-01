@@ -29,9 +29,13 @@ class SubjectController extends BaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Subject::orderBy('id', 'DESC')->get();
+            $data = Subject::where('admin_id', auth('admins')->user()->id)
+            ->orderBy('id', 'DESC')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('grade_id', function ($data) {
+                    return $data->grade->name;
+                })
                 ->addColumn('action', function ($data) {
                     return view('templates.index_actions', [
                         'id' => $data->id, 'route' => $this->route
@@ -72,6 +76,7 @@ class SubjectController extends BaseController
         {
             $subject = new Subject();
             $subject->grade_id = $request->grade_id;
+            $subject->admin_id = auth('admins')->user()->id;
             $subject->name = $name;
             $subject->save();
         }

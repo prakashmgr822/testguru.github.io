@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('grade_id')->nullable();
+            $table->unsignedBigInteger('admin_id');
             $table->text('description')->nullable();
             $table->decimal('correct_marks')->nullable();
             $table->integer('exam_duration')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->dateTime('target_date')->nullable();
             $table->boolean('status')->default('1');
             $table->foreign('grade_id')->references('id')->on('grades')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
 
             $table->timestamps();
 

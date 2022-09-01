@@ -38,6 +38,7 @@ class ExamController extends Controller
         $score = 0;
         $test = Test::find($request['test_id']);
         $questions = $test->questions;
+        $title = $test->name;
 //        dd($test);
         $answers = array();
         $answers = json_decode($request['answers']);
@@ -113,9 +114,11 @@ class ExamController extends Controller
                 'address' => $address,
             ]);
         }
+
+
 //        return $answers;
 //        return $score . "/" . count($questions) . "\n" . $percentage . "%";
-        return view('admins.exams.results', ['test' => $test['name'], 'score' => $score, 'total_questions' => count($questions), 'percentage' => $percentage, 'questions' => $questions, 'correctMarks' => $correctMarks, 'incorrectMarks' => $incorrectMarks, 'skippedMarks' => $skippedMarks, 'answers' => $answers, 'marks' => $marks, 'totalMarks' => $totalMarks, 'app_name'=> $app_name]);
+        return view('admins.exams.results', ['test' => $test['name'], 'score' => $score, 'total_questions' => count($questions), 'percentage' => $percentage, 'questions' => $questions, 'correctMarks' => $correctMarks, 'incorrectMarks' => $incorrectMarks, 'skippedMarks' => $skippedMarks, 'answers' => $answers, 'marks' => $marks, 'totalMarks' => $totalMarks, 'title'=> $title]);
     }
 
 

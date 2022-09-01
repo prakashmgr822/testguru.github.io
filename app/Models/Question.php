@@ -20,4 +20,9 @@ class Question extends Model
     {
         return $this->belongsTo(Subject::class);
     }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 }

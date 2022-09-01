@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\DataTables;
 
 class AdminController extends BaseController
@@ -64,10 +65,12 @@ class AdminController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required|unique:admins',
-            'password' => 'required'
+            'name' => 'required|string',
+            'email' => 'required|email|unique:admins,email',
+            'password' => 'required|min:8|string',
         ]);
         $data = $request->all();
+        $data['password'] = bcrypt($request->password);
         $admin = new Admin($data);
         $admin->save();
         return redirect()->route($this->indexRoute())->with('success', 'Admin Created Successfully.');
@@ -96,6 +99,7 @@ class AdminController extends BaseController
     {
         $info = $this->crudInfo();
         $info['item'] = Admin::findOrFail($id);
+
         return view($this->editResource(), $info);
     }
 
@@ -109,11 +113,17 @@ class AdminController extends BaseController
     public function update(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required',
-            'password' => 'required'
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|min:8|string',
         ]);
-        $data = $request->all();
         $admin = Admin::findOrFail($id);
+        $data = $request->all();
+        if($request->password !== null){
+            $data['password'] = bcrypt($request->password);
+        }else{
+            $data['password'] = $admin->password;
+        }
         $admin->update($data);
         return redirect()->route($this->indexRoute())->with('success', 'Admin Updated Successfully.');
     }

@@ -16,12 +16,15 @@ class Admin extends Authenticatable implements HasMedia
 
     protected $guard = 'admins';
 
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = ['id'];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }

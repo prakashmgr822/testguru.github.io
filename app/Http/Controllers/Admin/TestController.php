@@ -97,6 +97,7 @@ class TestController extends BaseController
     {
         $data = $request->all();
         $test = new Test($data);
+        $test->admin_id = auth('admins')->user()->id;
         $test->save();
 //        if ($request->image) {
 //            $test->addMediaFromRequest('image')

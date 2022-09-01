@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('grade_id')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->unsignedBigInteger('subject_id')->nullable();
             $table->longText('hint')->nullable();
@@ -27,7 +26,6 @@ return new class extends Migration
             $table->integer('answer');
             $table->timestamps();
 
-            $table->foreign('grade_id')->references('id')->on('grades')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade')
                 ->onUpdate('cascade');

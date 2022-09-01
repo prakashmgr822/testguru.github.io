@@ -24,7 +24,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $data['grades'] = Grade::all()->count();
+
         $data['questions'] = Question::all()->count();
         $data['tests'] = Test::all()->count();
         return view('admins.home', $data);

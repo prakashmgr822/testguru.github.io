@@ -30,7 +30,8 @@ class QuestionController extends BaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Question::orderBy('id', 'DESC')->get();
+            $data = Question::where('admin_id', auth()->user()->id)
+            ->orderBy('id', 'DESC')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('answer', function ($row) {
@@ -88,8 +89,9 @@ class QuestionController extends BaseController
             'option_4' => 'required',
         ]);
         $data = $request->all();
-        $admin = new Question($data);
-        $admin->save();
+        $question = new Question($data);
+        $question->admin_id = auth('admins')->user()->id;
+        $question->save();
         return redirect()->route($this->indexRoute())->with('success', 'Question Created Successfully.');
     }
 

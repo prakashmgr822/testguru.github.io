@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\Grade;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -19,7 +21,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['grades'] = Grade::all()->count();
+        $data['admins'] = Admin::all()->count();
+        return view('home', $data);
     }
 
     /**

@@ -254,21 +254,28 @@ return [
             'guard' => 'superAdmin'
         ],
         [
+            'text' => 'Grade',
+            'route' => 'grades.index',
+            'icon' => 'nav-icon fas fa-list-ol ',
+            'guard' => 'superAdmin'
+        ],
+        [
             'text' => 'Dashboard',
             'route' => 'admins.home',
             'icon' => 'nav-icon fas fa-th',
             'guard' => 'admins'
         ],
-        [
-            'text' => 'Grade',
-            'route' => 'grades.index',
-            'icon' => 'nav-icon fas fa-list-ol ',
-            'guard' => 'admins'
-        ],
+
         [
             'text' => 'Subject',
             'route' => 'subjects.index',
             'icon' => 'nav-icon fas fa-book',
+            'guard' => 'admins'
+        ],
+        [
+            'text' => 'Marksheet',
+            'route' => 'marksheets.index',
+            'icon' => 'nav-icon fas fa-file',
             'guard' => 'admins'
         ],
         [
