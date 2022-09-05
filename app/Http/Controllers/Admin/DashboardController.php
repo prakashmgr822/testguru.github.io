@@ -25,8 +25,9 @@ class DashboardController extends Controller
     public function index()
     {
 
-        $data['questions'] = Question::all()->count();
-        $data['tests'] = Test::all()->count();
+        $data['questions'] = Question::where('admin_id', auth('admins')->user()->id)->count();
+        $data['tests'] = Test::where('admin_id', auth('admins')->user()->id)->count();
+        $data['subjects'] = Subject::where('admin_id', auth('admins')->user()->id)->count();
         return view('admins.home', $data);
 
     }

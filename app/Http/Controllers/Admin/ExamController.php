@@ -38,6 +38,7 @@ class ExamController extends Controller
         $score = 0;
         $test = Test::find($request['test_id']);
         $questions = $test->questions;
+        $admin_id = $test->admin_id;
         $title = $test->name;
 //        dd($test);
         $answers = array();
@@ -53,7 +54,10 @@ class ExamController extends Controller
             error_log("realAnswer-->" . $realAnswer);
             error_log("userAnswer-->" . $userAnswer);
             if ($userAnswer === $realAnswer) $score++;
+            $userAns[] = $userAnswer;
         }
+
+
         $percentage = intval(round(($score / count($questions)) * 100));
 
         $correctMarks = 0;
@@ -84,8 +88,6 @@ class ExamController extends Controller
         {
             $phone=$user->phone;
             $name=$user->name;
-            $level=$user->level;
-            $college_name =$user->college_name;
             $address=$user->address;
         }
 
@@ -93,7 +95,6 @@ class ExamController extends Controller
         $marks = ($correctMarks * $test->correct_marks);
         $totalMarks = $test->correct_marks * count($questions);
         $totalQuestions = count($questions);
-        $app_name= '';
         if ($request['user_id'] !== null) {
             $marksheet = Marksheet::Create([
                 'test_id' => $request['test_id'],
@@ -109,16 +110,14 @@ class ExamController extends Controller
                 'obtained_score' => $marks > 0 ? $marks : '0',
                 'name' => $name,
                 'phone' => $phone,
-                'level' => $level,
-                'college_name' => $college_name,
                 'address' => $address,
+                'admin_id' => $admin_id,
             ]);
         }
 
 
-//        return $answers;
 //        return $score . "/" . count($questions) . "\n" . $percentage . "%";
-        return view('admins.exams.results', ['test' => $test['name'], 'score' => $score, 'total_questions' => count($questions), 'percentage' => $percentage, 'questions' => $questions, 'correctMarks' => $correctMarks, 'incorrectMarks' => $incorrectMarks, 'skippedMarks' => $skippedMarks, 'answers' => $answers, 'marks' => $marks, 'totalMarks' => $totalMarks, 'title'=> $title]);
+        return view('admins.exams.results', ['test' => $test['name'], 'score' => $score, 'total_questions' => count($questions), 'percentage' => $percentage, 'questions' => $questions, 'correctMarks' => $correctMarks, 'incorrectMarks' => $incorrectMarks, 'skippedMarks' => $skippedMarks, 'answers' => $answers, 'marks' => $marks, 'totalMarks' => $totalMarks, 'title'=> $title, 'userAns'=> $userAns]);
     }
 
 

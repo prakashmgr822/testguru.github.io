@@ -21,7 +21,7 @@
                 @foreach($item->questions as $i => $question)
                     <tr>
                         <td class="text-center">{{$i+1}}</td>
-                        <td class="text-center">N/A</td>
+                        <td class="text-center">{{$question->subject->grade->name}}</td>
                         <td class="text-center">{{$question->subject->name}}</td>
                         <td class="text-center">{!! $question->question !!}</td>
                         <td class="text-center">

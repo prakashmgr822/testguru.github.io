@@ -308,6 +308,12 @@ return [
             'icon' => 'nav-icon fas fa-globe',
             'guard' => 'web'
         ],
+        [
+            'text' => 'Marksheet',
+            'route' => 'marksheet.index',
+            'icon' => 'nav-icon fas fa-file',
+            'guard' => 'web'
+        ],
     ],
 
     /*

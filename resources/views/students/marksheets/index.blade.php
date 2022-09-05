@@ -27,8 +27,6 @@
             <tr class="text-left text-capitalize">
                 <th>id</th>
                 <th>test</th>
-                <th>name</th>
-                <th>grade</th>
                 <th>correct questions</th>
                 <th>incorrect questions</th>
                 <th>skipped questions</th>
@@ -77,7 +75,7 @@
                     serverSide: true,
                     destroy: true,
                     ajax:{
-                        url:  "{{ route('marksheets.index') }}",
+                        url:  "{{ route('marksheet.index') }}",
                         data: {
                             test_id: test_id,
                             dropdown_id: dropdown_test
@@ -86,8 +84,6 @@
                     columns: [
                         {data: 'id', name: 'DT_RowIndex'},
                         {data: 'test_id', name: 'test_id'},
-                        {data: 'name', name: 'name'},
-                        {data: 'grade', name: 'grade'},
                         {data: 'total_correct_questions', name: 'total_correct_questions'},
                         {data: 'total_incorrect_questions', name: 'total_incorrect_questions'},
                         {data: 'total_skipped_questions', name: 'total_skipped_questions'},

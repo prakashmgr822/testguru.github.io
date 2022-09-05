@@ -71,6 +71,7 @@
                             <th scope="col">S.N</th>
                             <th scope="col">Question</th>
                             <th scope="col">Answer</th>
+                            <th scope="col">Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -88,6 +89,8 @@
                                     {!! $question->answer==3?$question->option_3:"" !!}
                                     {!! $question->answer==4?$question->option_4:"" !!}
                                 </td>
+
+
 
                         @endforeach
 

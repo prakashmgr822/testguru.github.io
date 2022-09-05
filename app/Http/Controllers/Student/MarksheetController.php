@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
@@ -14,9 +14,9 @@ class MarksheetController extends BaseController
     public function __construct()
     {
         $this->title = 'Marksheets';
-        $this->resources = 'admins.marksheets.';
+        $this->resources = 'students.marksheets.';
         parent::__construct();
-        $this->route = 'marksheets.';
+        $this->route = 'marksheet.';
 //        parent::generateAllMiddlewareByPermission('menu');
     }
 
@@ -31,31 +31,28 @@ class MarksheetController extends BaseController
     {
         $info = $this->crudInfo();
         $info['id'] = $request->id;
-        $info['tests'] = Test::where('admin_id', auth('admins')->user()->id)->get();
-
+        $info['tests'] = Test::where('grade_id', auth('web')->user()->grade_id)->get();
 
         if ($request->ajax()) {
             if ($request->test_id)
             {
                 $data = Marksheet::where('test_id', $request->test_id)
+                    ->where('student_id', auth('web')->user()->id)
                     ->orderBy('id', 'DESC')->get();
             }
             elseif ($request->dropdown_id)
             {
                 $data = Marksheet::where('test_id', $request->dropdown_id)
+                    ->where('student_id', auth('web')->user()->id)
                     ->orderBy('id', 'DESC')->get();
             }
             else{
-                $data = Marksheet::where('admin_id', auth('admins')->user()->id)
-                ->orderBy('id', 'DESC')->get();
+                $data = Marksheet::where('student_id', auth('web')->user()->id)
+                    ->orderBy('id', 'DESC')->get();
             }
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('test_id', function ($data){
-                    return $data->test_id ?? '-';
-
-                })
                 ->addColumn('test_id', function ($data){
                     return $data->test->name;
                 })
@@ -67,7 +64,7 @@ class MarksheetController extends BaseController
                     return $data->student->grade->name ?? '-';
                 })
 
-                ->rawColumns(['name', 'college_name', 'address', 'level', 'phone', 'test_id'])
+                ->rawColumns(['name', 'grade', 'phone', 'test_id'])
                 ->make(true);
         }
 

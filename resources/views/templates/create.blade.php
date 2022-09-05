@@ -44,12 +44,12 @@
                             <button type="submit" id="button_submit" class="button_submit btn btn-primary"
                                     name="action" value="submit">Submit
                             </button>
-                            @if(isset($addMoreButton))
-                            <button type="submit" id="button_submit_add" class="button_submit btn btn-primary"
-                                    name="action" value="add">
-                                Submit & Add new
-                            </button>
-                            @endif
+{{--                            @if(isset($addMoreButton))--}}
+{{--                            <button type="submit" id="button_submit_add" class="button_submit btn btn-primary"--}}
+{{--                                    name="action" value="add">--}}
+{{--                                Submit & Add new--}}
+{{--                            </button>--}}
+{{--                            @endif--}}
                             <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
                         </div>
                     </form>

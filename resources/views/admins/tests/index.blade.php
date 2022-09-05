@@ -17,7 +17,6 @@
             <tr class="text-left text-capitalize">
                 <th>#id</th>
                 <th>Name</th>
-                <th>Description</th>
                 <th>Correct Marks</th>
                 <th>Scheduled Date</th>
                 <th>Exam Duration</th>
@@ -40,7 +39,6 @@
                 columns: [
                     {data: 'id', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
-                    {data: 'description', name: 'description'},
                     {data: 'correct_marks', name: 'correct_marks'},
                     {data: 'target_date', name: 'target_date'},
                     {data: 'exam_duration', name: 'exam_duration'},

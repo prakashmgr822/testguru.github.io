@@ -49,4 +49,9 @@ class User extends Authenticatable
         return $this->belongsTo(Grade::class);
     }
 
+    public function marksheets()
+    {
+        return $this->hasMany(Marksheet::class);
+    }
+
 }

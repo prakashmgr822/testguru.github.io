@@ -19,4 +19,9 @@ class Test extends Model
     {
         return $this->belongsToMany(Question::class, 'question_tests')->withTimestamps();
     }
+
+    public function marksheets()
+    {
+        return $this->hasMany(Marksheet::class);
+    }
 }

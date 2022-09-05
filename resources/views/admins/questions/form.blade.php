@@ -24,7 +24,7 @@
         <select name="subject_id" id="" class="form-control" required>
             <option value="">Please Choose the Subject</option>
             @foreach($subjects as $subject)
-                <option value="{{$subject->id}}" {{old('subject_id', $item->id) == $subject->id ? 'selected' : ''}}>{{$subject->name}}</option>
+                <option value="{{$subject->id}}" @if(isset($item->subject->id)) {{old('subject_id', $item->subject->id) ==$subject->id ? 'selected' : '' }}@endif>{{$subject->name}}</option>
             @endforeach
         </select>
     </div>

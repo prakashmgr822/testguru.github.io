@@ -33,7 +33,8 @@ class TestController extends BaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Test::orderBy('id', 'DESC')->get();
+            $data = Test::where('admin_id', auth('admins')->user()->id)
+            ->orderBy('id', 'DESC')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('target_date', function ($data) {
@@ -42,13 +43,6 @@ class TestController extends BaseController
                 ->editColumn('exam_duration', function ($data) {
                     if ($data->exam_duration) {
                        return $data->exam_duration. ' (minutes)';
-                    } else {
-                        return 'N/A';
-                    }
-                })
-                ->editColumn('description', function ($data) {
-                    if ($data->description) {
-                        return $data->description;
                     } else {
                         return 'N/A';
                     }

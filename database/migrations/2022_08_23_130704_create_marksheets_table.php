@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('marksheets', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('level')->nullable();
-            $table->string('college_name')->nullable();
-            $table->string('address')->nullable();
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('test_id');
+            $table->unsignedBigInteger('admin_id');
             $table->integer('total_correct_questions');
             $table->integer('total_incorrect_questions');
             $table->integer('total_skipped_questions');
@@ -27,6 +25,11 @@ return new class extends Migration
             $table->double('total_score');
             $table->double('obtained_score');
             $table->timestamps();
+
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
+
         });
     }
 

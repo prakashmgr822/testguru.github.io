@@ -70,7 +70,7 @@ class QuestionController extends BaseController
     public function create()
     {
         $info = $this->crudInfo();
-        $info['subjects'] = Subject::all();
+        $info['subjects'] = Subject::where('admin_id', auth()->user()->id)->get();
         return view($this->createResource(), $info);
     }
 
@@ -118,7 +118,8 @@ class QuestionController extends BaseController
     {
         $info = $this->crudInfo();
         $info['item'] = Question::findOrFail($id);
-        $info['subjects'] = Subject::all();
+
+        $info['subjects'] = Subject::where('admin_id', auth()->user()->id)->get();
         return view($this->editResource(), $info);
     }
 

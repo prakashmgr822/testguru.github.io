@@ -34,6 +34,10 @@ class StudentController extends BaseController
             $data = User::orderBy('id', 'DESC')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('grade_id', function ($data)
+                {
+                    return $data->grade->name;
+                })
                 ->addColumn('action', function ($data) {
                     return view('templates.index_actions', [
                         'id' => $data->id, 'route' => $this->route
@@ -67,11 +71,14 @@ class StudentController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|string',
         ]);
         $data = $request->all();
-        $admin = new User($data);
-        $admin->save();
+        $data['password'] = bcrypt($request->password);
+        $student = new User($data);
+        $student->save();
         return redirect()->route($this->indexRoute())->with('success', 'Admin Created Successfully.');
     }
 
@@ -112,11 +119,19 @@ class StudentController extends BaseController
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|min:8|string',
         ]);
+        $student = User::findOrFail($id);
         $data = $request->all();
-        $admin = User::findOrFail($id);
-        $admin->update($data);
+        if($request->password !== null){
+            $data['password'] = bcrypt($request->password);
+        }else{
+            $data['password'] = $student->password;
+        }
+
+        $student->update($data);
         return redirect()->route($this->indexRoute())->with('success', 'Admin Updated Successfully.');
     }
 
