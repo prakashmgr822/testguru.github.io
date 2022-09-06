@@ -114,6 +114,24 @@
     </div>
 </div>
 
+<div class="modal hide fade in" data-keyboard="false" data-backdrop="static" id="timeupModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Time's Up</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">You're time's up. Click on the button below to view results.</div>
+            </div>
+            <div class="modal-footer">
+                <button id="timeupModalButton" onclick="hideFunction()" type="button"
+                        class="btn btn-primary btn-block">View Results
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form method="post" id="answersForm" action="{{ route("exam.results") }}">
     @method('POST')
     {{csrf_field()}}
@@ -246,7 +264,6 @@
                     } else {
                         //Exam started & ended already
                         $(document).ready(function () {
-
                             //no need registration for this
                             $('#examWelcomeModal').modal('show');
                             {{--$('#welcomeMessage').innerHTML("{{$test['description']}}");--}}

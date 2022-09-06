@@ -36,7 +36,11 @@ class StudentController extends BaseController
                 ->addIndexColumn()
                 ->editColumn('grade_id', function ($data)
                 {
-                    return $data->grade->name;
+                    if ($data->grade_id) {
+                        return $data->grade->name;
+                    } else {
+                        return  'N/A';
+                    }
                 })
                 ->addColumn('action', function ($data) {
                     return view('templates.index_actions', [
