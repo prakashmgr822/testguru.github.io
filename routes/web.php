@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/redirect-user', function () {
     if (\App\Helpers\GuardHelper::check() === "admins") {
@@ -40,6 +42,8 @@ Route::group(['prefix' => 'superadmin', 'middleware' => 'auth:superAdmin'], func
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::resource('admins', \App\Http\Controllers\SuperAdmin\AdminController::class);
     Route::resource('grades', \App\Http\Controllers\SuperAdmin\GradeController::class);
+    Route::get('/change-password', [\App\Http\Controllers\SuperAdmin\DashboardController::class, 'changePassword'])->name('change-password');
+    Route::post('/change-password/save', [\App\Http\Controllers\SuperAdmin\DashboardController::class, 'changePasswordSave'])->name('password.store');
 });
 
 Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () {
@@ -53,6 +57,9 @@ Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () 
     Route::resource('subjects', \App\Http\Controllers\Admin\SubjectController::class);
     Route::delete('questions/{question_id}/{test_id}', [\App\Http\Controllers\Admin\TestController::class, 'deleteQuestion'])->name('questionDelete');
     Route::resource('marksheets', \App\Http\Controllers\Admin\MarksheetController::class);
+    Route::get('/change-password', [\App\Http\Controllers\Admin\DashboardController::class, 'changePassword'])->name('admin.change-password');
+    Route::post('/change-password/save', [\App\Http\Controllers\Admin\DashboardController::class, 'changePasswordSave'])->name('admin.password.store');
+    Route::post('check-status', [\App\Http\Controllers\Admin\TestController::class, 'checkStatus'])->name('test-status');
 
 });
 
@@ -69,7 +76,29 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::resource('test', \App\Http\Controllers\Student\TestController::class);
     Route::resource('marksheet', \App\Http\Controllers\Student\MarksheetController::class);
+    Route::get('/change-password', [\App\Http\Controllers\Student\StudentController::class, 'changePassword'])->name('student.change-password');
+    Route::post('/change-password/save', [\App\Http\Controllers\Student\StudentController::class, 'changePasswordSave'])->name('student.password.store');
 });
 
 Route::resource('uploader', \App\Http\Controllers\UploadController::class);
+
+//Email Verification
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/user/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+
 

@@ -21,6 +21,7 @@
                 <th>Scheduled Date</th>
                 <th>Exam Duration</th>
                 <th>Created At</th>
+                <th>Status</th>
                 <th>action</th>
             </tr>
             </thead>
@@ -43,6 +44,20 @@
                     {data: 'target_date', name: 'target_date'},
                     {data: 'exam_duration', name: 'exam_duration'},
                     {data: 'created_at', name: 'created_at'},
+                    {
+                        data: 'status', name: 'type', render: function (data, type, full, meta) {
+                            switch (data) {
+                                case (0):
+                                    return `<span class="badge badge-success">Completed</span>`;
+                                    break;
+                                case (1):
+                                    return `<span class="badge badge-danger">Pending</span>`;
+                                    break;
+                                default:
+                                    return `<span class="badge badge-success">Pending</span>`;
+                            }
+                        }
+                    },
                     {data: 'action', name: 'action'},
                 ],
             });

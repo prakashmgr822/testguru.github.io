@@ -194,4 +194,9 @@ class TestController extends BaseController
         return redirect()->back()
             ->with('info', 'Question deleted successfully.');
     }
+
+    public function checkStatus(Request $request)
+    {
+        dd($request->all());
+    }
 }

@@ -3,22 +3,25 @@
     <title>{{$title}}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <link rel="stylesheet" href="{{asset('exam/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('libs/cute-alert/style.css')}}" />
+    <link rel="stylesheet" href="{{asset('libs/cute-alert/style.css')}}"/>
 
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">--}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">--}}
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+          integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
     {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">--}}
 
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
 </script>
 <script src="{{asset('libs/cute-alert/cute-alert.js')}}"></script>
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -32,6 +35,7 @@
 @include('admins.tests.partials.navbar')
 
 <div class="container">
+    <input type="hidden" value="{{$test->id}}" id="test_id">
     <div class="row mt-3">
         <div class="col">
             <p id="questionNumber"></p>
@@ -60,13 +64,19 @@
         <div class="card-footer py-3">
             <div class="row">
                 <div class="col">
-                    <a href="#" id="prevButton"><button class="btn btn-primary">Prev</button></a>
+                    <a href="#" id="prevButton">
+                        <button class="btn btn-primary">Prev</button>
+                    </a>
                 </div>
                 <div class="col-auto">
-                    <a href="#" id="skip"><button class="btn btn-danger">Skip</button></a>
+                    <a href="#" id="skip">
+                        <button class="btn btn-danger">Skip</button>
+                    </a>
                 </div>
                 <div class="col" style="text-align: justify; text-align-last: right;">
-                    <a href="#" id="nextButton"><button class="btn btn-primary">Next</button></a>
+                    <a href="#" id="nextButton">
+                        <button class="btn btn-primary">Next</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -78,7 +88,7 @@
         </div>
         <div class="col-5">
             <div class="submit-button">
-                <button class="btn btn-success "  type="button" onclick="showConfirm()">
+                <button class="btn btn-success " type="button" onclick="showConfirm()">
                     {{--                        <i class="material-icons pmd-sm">check</i>--}}
                     <i class="fa fa-check"></i>
                 </button>
@@ -98,9 +108,9 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-{{--                    @if($test->getImage())--}}
-{{--                        <img class='mx-auto d-block' width='240' src="{{$test->getImage()?? ''}}" alt="image"/>--}}
-{{--                    @endif--}}
+                    {{--                    @if($test->getImage())--}}
+                    {{--                        <img class='mx-auto d-block' width='240' src="{{$test->getImage()?? ''}}" alt="image"/>--}}
+                    {{--                    @endif--}}
                 </div>
                 <div class="form-group" id="welcomeMessage">
 
@@ -108,7 +118,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="examWelcomeModalButton" type="button" class="btn btn-primary btn-block" style="width: 100%">Start</button>
+                <button id="examWelcomeModalButton" type="button" class="btn btn-primary btn-block" style="width: 100%">
+                    Start
+                </button>
             </div>
         </div>
     </div>
@@ -158,9 +170,9 @@
                     if (result = "confirmed") {
                         cuteAlert({
                             type: "success",
-                            title: "Success Title",
-                            message: "Success Message",
-                            buttonText: "Okay"
+                            title: "Submitted",
+                            message: "Your answer has been submitted",
+                            buttonText: "Success"
                         }).then((result) => {
                             if (result = "confirmed") {
                                 $('#answerTestId').val( {{$test['id']}});
@@ -177,6 +189,7 @@
         $(document).ready(function () {
             //declarations
             var timeAlertShwon = false;
+
             var examTotalTime = $("#input-exam-time").val();//minutes
             // alert(examTotalTime)
             var examDate = '{{$test['target_date']}}';
@@ -189,7 +202,6 @@
             var seconds = Math.floor((diffMs / 1000) - minutes * 60);
 
 
-
             checkExamTime();
 
             function checkExamTime() {
@@ -198,7 +210,7 @@
                     $(document).ready(function () {
                         $('#qn').css("display", "none");
                         $('#opn').css("display", "none");
-                        $('#examWelcomeModal').modal('show',{backdrop: 'static', keyboard: false});
+                        $('#examWelcomeModal').modal('show', {backdrop: 'static', keyboard: false});
                         // let remainingSeconds = examTotalTime * 60 - Math.abs(seconds);
                         let timer2 = "" + minutes + ":" + seconds;
 
@@ -283,6 +295,16 @@
                                     if (minutes < 0) {
                                         clearInterval(interval);
                                         timeUp();
+                                        //ajax
+                                        var testId = $("#test_id").val();
+                                        $.ajax({
+                                            type:'POST',
+                                            url: "{{ route('test-status') }}",
+                                            data: {
+                                                id: testId,
+                                                status: 0,
+                                            },
+                                            })
 
                                     }
 
@@ -339,7 +361,6 @@
         });
 
 
-
         var currentQuestionIndex = 0;
 
         function selectRow(option) {
@@ -382,11 +403,10 @@
                     } else {
                         currentQuestionIndex++;
                         updateContent();
-                        if($('.opt').hasClass("bg-info")) {
+                        if ($('.opt').hasClass("bg-info")) {
                             $('#hint').html(hintData);
                             $('#hint').show();
-                        }else
-                        {
+                        } else {
                             $('#hint').hide();
                         }
                     }
@@ -398,13 +418,14 @@
                         buttonText: "Okay"
                     }).then((result) => {
                         if (answers.length > 0) {
-                            if (result.isConfirmed) {
-                                Swal.fire(
-                                    'Submitted!',
-                                    'Your answers has been submitted.',
-                                    'success',
-                                ).then((result) => {
-                                    if (result.isConfirmed) {
+                            if (result = "confirmed") {
+                                cuteAlert({
+                                    type: "success",
+                                    title: "Submitted",
+                                    message: "Your answer has been submitted",
+                                    buttonText: "Success"
+                                }).then((result) => {
+                                    if (result = "confirmed") {
                                         $('#answerTestId').val( {{$test['id']}});
                                         $('#answers').val(JSON.stringify(answers));
                                         $('#answersForm').submit();
@@ -475,6 +496,7 @@
                 }
             });
         var hintData;
+
         function updateContent() {
             updateAnswer();
             var questionNumber = "Question <strong>" + (currentQuestionIndex + 1) + " of " + questions.length + "</strong>";
@@ -510,7 +532,6 @@
                 selectRow("4");
             }
         }
-
 
 
     </script>

@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Test;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -83,5 +89,28 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changePassword()
+    {
+        $info['title'] = 'Change Password';
+        return view('students.changePassword', $info);
+    }
+
+    function changePasswordSave(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        $superAdmin = User::findOrFail(auth('web')->user()->id);
+        if (Hash::check($request->old_password, $superAdmin->password)) {
+            $superAdmin->password = Hash::make($request->new_password);
+            $superAdmin->save();
+            return redirect()->back()->with('success', 'Password Changed Successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Old Password Mismatched.')->withInput($request->input());
+        }
     }
 }

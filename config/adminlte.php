@@ -260,6 +260,12 @@ return [
             'guard' => 'superAdmin'
         ],
         [
+            'text' => 'Change Password',
+            'route' => 'change-password',
+            'icon' => 'nav-icon fas fa-lock ',
+            'guard' => 'superAdmin'
+        ],
+        [
             'text' => 'Dashboard',
             'route' => 'admins.home',
             'icon' => 'nav-icon fas fa-th',
@@ -297,6 +303,12 @@ return [
             'guard' => 'admins'
         ],
         [
+            'text' => 'Change Password',
+            'route' => 'admin.change-password',
+            'icon' => 'nav-icon fas fa-lock ',
+            'guard' => 'admins'
+        ],
+        [
             'text' => 'Dashboard',
             'route' => 'student.home',
             'icon' => 'nav-icon fas fa-th',
@@ -312,6 +324,12 @@ return [
             'text' => 'Marksheet',
             'route' => 'marksheet.index',
             'icon' => 'nav-icon fas fa-file',
+            'guard' => 'web'
+        ],
+        [
+            'text' => 'Change Password',
+            'route' => 'student.change-password',
+            'icon' => 'nav-icon fas fa-lock ',
             'guard' => 'web'
         ],
     ],

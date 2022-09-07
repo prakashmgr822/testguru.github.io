@@ -47,6 +47,14 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="col-6">
+            <label for="">Status</label>
+            <select name="status" id="" class="form-select form-control">
+                <option value="0" {{old('status',$item->status)==0?'selected':''}}>Pending</option>
+                <option value="1" {{old('status',$item->status)==1?'selected':''}}>Completed</option>
+            </select>
+        </div>
     </div>
     <div class="form-group row">
         <div class="col-12 mt-4">
