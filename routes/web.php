@@ -76,6 +76,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/home', [\App\Http\Controllers\Student\StudentController::class, 'index'])->name('student.home');
     Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('test-notification');
     Route::get('/notification/show/{id}', [\App\Http\Controllers\NotificationController::class, 'show'])->name('notifications.show');
+    Route::get('/notification/edit/{id}', [\App\Http\Controllers\NotificationController::class, 'show'])->name('notifications.edit');
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::resource('test', \App\Http\Controllers\Student\TestController::class);
     Route::resource('marksheet', \App\Http\Controllers\Student\MarksheetController::class);

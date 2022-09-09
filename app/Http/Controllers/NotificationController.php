@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\NotificationsHelper;
+use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,7 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Auth::user()->notifications->whereNull('read_at')->all();
+
         $dropdownHtml = ' ';
 
         foreach ($notifications as $key => $notification) {
@@ -83,11 +85,14 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-        $notification = Auth::user()->notifications->find($id);
+
+        $notification = Auth::user()->notifications()->find($id);
+
         if ($notification) {
             $notification->markAsRead();
         }
         $redirectPath = NotificationsHelper::getDetail($notification)['link'] ?: url('/');
+
         return redirect()->to($redirectPath);
     }
 
@@ -99,7 +104,9 @@ class NotificationController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
+        $test = Test::FindOrFail($id);
+        return view('notification.show', compact('test'));
     }
 
     /**
@@ -124,4 +131,6 @@ class NotificationController extends Controller
     {
         //
     }
+
+
 }

@@ -13,11 +13,12 @@ class NotificationsHelper
 {
     static function getDetail(DatabaseNotification $notification)
     {
+
         $data = [];
         switch ($notification->type) {
             case "App\Notifications\TestNotification";
                 $data['title'] = $notification->data['title'];
-                $data['link'] = route('notifications.show', $notification->data['id']);
+                $data['link'] = route('notifications.edit', $notification->data['id']);
                 $data['notification'] = $notification;
                 break;
             case "App\Notifications\AdminNewBlogNotification";
