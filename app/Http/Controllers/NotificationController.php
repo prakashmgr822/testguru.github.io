@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\NotificationsHelper;
 use App\Models\Test;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -104,9 +105,10 @@ class NotificationController extends Controller
      */
     public function edit($id)
     {
-        dd($id);
         $test = Test::FindOrFail($id);
-        return view('notification.show', compact('test'));
+        $test->target_date = Carbon::parse($test->target_date)->format("j-F-Y, H:i:s");
+
+        return view('notifications.show', compact('test'));
     }
 
     /**

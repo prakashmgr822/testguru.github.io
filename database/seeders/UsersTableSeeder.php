@@ -25,20 +25,5 @@ class UsersTableSeeder extends Seeder
         ]);
         $user->save();
 
-        $user = new Admin([
-            'name' => 'Admin',
-            'email' => 'admin@testguru.com',
-            'email_verified_at' => '2022-01-01',
-            'password' => bcrypt('12345678'),
-        ]);
-        $user->save();
-
-        $user = new User([
-            'name' => 'Student',
-            'email' => 'student@testguru.com',
-            'email_verified_at' => '2022-01-01',
-            'password' => bcrypt('12345678'),
-        ]);
-        $user->save();
     }
 }

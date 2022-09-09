@@ -60,7 +60,7 @@ class TestNotification extends Notification
     {
         return [
             'id' => $this->test->id,
-            'title' => 'New Test Added',
+            'title' => 'New test '. $this->test->name .' has been added',
             'content' => 'A new test '. $this->test->name. 'has been added',
         ];
     }

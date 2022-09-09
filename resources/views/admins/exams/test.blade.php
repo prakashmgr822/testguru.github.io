@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <link rel="stylesheet" href="{{asset('exam/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('libs/cute-alert/style.css')}}"/>
+{{--    <link rel="stylesheet" href="{{asset('libs/cute-alert/style.css')}}"/>--}}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon.ico') }}">
 
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -23,7 +24,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
 </script>
-<script src="{{asset('libs/cute-alert/cute-alert.js')}}"></script>
+{{--<script src="{{asset('libs/cute-alert/cute-alert.js')}}"></script>--}}
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -158,23 +159,23 @@
         $('#hint').hide();
 
         function showConfirm() {
-            cuteAlert({
-                type: "question",
-                img: "question",
-                title: "Confirm Title",
-                message: "Confirm Message",
-                confirmText: "Okay",
-                cancelText: "Cancel"
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
             }).then((result) => {
                 if (answers.length > 0) {
-                    if (result = "confirmed") {
-                        cuteAlert({
-                            type: "success",
-                            title: "Submitted",
-                            message: "Your answer has been submitted",
-                            buttonText: "Success"
-                        }).then((result) => {
-                            if (result = "confirmed") {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Submitted!',
+                            'Your answers has been submitted.',
+                            'success',
+                        ).then((result) => {
+                            if (result.isConfirmed) {
                                 $('#answerTestId').val( {{$test['id']}});
                                 $('#answers').val(JSON.stringify(answers));
                                 $('#answersForm').submit();
@@ -396,11 +397,9 @@
                 if (currentQuestionIndex < questions.length - 1) {
                     if (answers[currentQuestionIndex] === "") {
                         // alert("Please select an option");
-                        cuteAlert({
-                            type: "warning",
-                            title: "Warning Title",
-                            message: "Warning Message",
-                            buttonText: "Okay"
+                        Swal.fire({
+                            title: '<p class="text-danger">Please select an option</p>',
+                            icon: 'warning',
                         })
                     } else {
                         currentQuestionIndex++;
@@ -413,21 +412,23 @@
                         }
                     }
                 } else {
-                    cuteAlert({
-                        type: "warning",
-                        title: "Warning",
-                        message: "Are you sure?",
-                        buttonText: "Okay"
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, submit it!'
                     }).then((result) => {
                         if (answers.length > 0) {
-                            if (result = "confirmed") {
-                                cuteAlert({
-                                    type: "success",
-                                    title: "Submitted",
-                                    message: "Your answer has been submitted",
-                                    buttonText: "Success"
-                                }).then((result) => {
-                                    if (result = "confirmed") {
+                            if (result.isConfirmed) {
+                                Swal.fire(
+                                    'Submitted!',
+                                    'Your answers has been submitted.',
+                                    'success',
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
                                         $('#answerTestId').val( {{$test['id']}});
                                         $('#answers').val(JSON.stringify(answers));
                                         $('#answersForm').submit();
