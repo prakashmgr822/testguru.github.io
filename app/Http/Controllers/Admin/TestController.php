@@ -97,27 +97,7 @@ class TestController extends BaseController
         $test = new Test($data);
         $test->admin_id = auth('admins')->user()->id;
         $test->save();
-//        if ($request->image) {
-//            $test->addMediaFromRequest('image')
-//                ->toMediaCollection();
-//        }
         $students = User::where('grade_id', $test->grade_id)->get();
-
-
-//        $options = array(
-//            'cluster' => 'ap2',
-//            'useTLS' => true
-//        );
-//
-//
-//        $pusher = new Pusher(
-//            env('PUSHER_APP_KEY'),
-//            env('PUSHER_APP_SECRET'),
-//            env('PUSHER_APP_ID'),
-//            $options
-//        );
-//
-//        $pusher->trigger('test-added', 'TestAdded');
 
         foreach ($students as $student){
             try {

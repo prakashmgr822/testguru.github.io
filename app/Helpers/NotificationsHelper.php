@@ -6,11 +6,12 @@ namespace App\Helpers;
 
 use App\Models\User;
 use App\Notifications\TestNotification;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationsHelper
 {
-    static function getDetail(TestNotification $notification)
+    static function getDetail(DatabaseNotification $notification)
     {
         $data = [];
         switch ($notification->type) {

@@ -346,7 +346,7 @@ return [
             'dropdown_mode'   => true,
             'dropdown_flabel' => false,
             'update_cfg'   => [
-                'url' => 'user/notifications',
+                'route'  => ['test-notification'],
                 'period' => 30,
             ],
         ],

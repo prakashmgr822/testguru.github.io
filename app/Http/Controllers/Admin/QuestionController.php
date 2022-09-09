@@ -97,7 +97,6 @@ class QuestionController extends BaseController
             'option_4' => 'required',
         ]);
         $data = $request->all();
-        dd($data);
         $question = new Question($data);
         $question->admin_id = auth('admins')->user()->id;
         $question->save();
