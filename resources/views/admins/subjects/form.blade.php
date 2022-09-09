@@ -24,7 +24,7 @@
             <thead>
             <tr>
                 <th class="w-25 text-center">Name</th>
-                <th><i class="fas fa-trash-alt" style="padding-left: 110px"></i></th>
+                <th><i class="fas fa-trash-alt" style="padding-left: 200px"></i></th>
             </tr>
             </thead>
             <tbody id="items">

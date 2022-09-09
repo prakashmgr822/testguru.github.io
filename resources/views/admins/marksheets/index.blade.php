@@ -29,12 +29,10 @@
                 <th>test</th>
                 <th>name</th>
                 <th>grade</th>
-                <th>correct questions</th>
-                <th>incorrect questions</th>
-                <th>skipped questions</th>
                 <th>total questions</th>
                 <th>total score</th>
                 <th>obtained score</th>
+                <th>date</th>
             </tr>
             </thead>
 
@@ -88,12 +86,10 @@
                         {data: 'test_id', name: 'test_id'},
                         {data: 'name', name: 'name'},
                         {data: 'grade', name: 'grade'},
-                        {data: 'total_correct_questions', name: 'total_correct_questions'},
-                        {data: 'total_incorrect_questions', name: 'total_incorrect_questions'},
-                        {data: 'total_skipped_questions', name: 'total_skipped_questions'},
                         {data: 'total_questions', name: 'total_questions'},
                         {data: 'total_score', name: 'total_score'},
                         {data: 'obtained_score', name: 'obtained_score'},
+                        {data: 'created_at', name: 'created_at'},
                     ],
                 });
             }

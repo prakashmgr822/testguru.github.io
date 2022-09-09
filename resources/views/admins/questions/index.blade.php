@@ -17,6 +17,7 @@
             <tr class="text-left text-capitalize">
                 <th>#id</th>
                 <th>Question</th>
+                <th>grade</th>
                 <th>Option 1</th>
                 <th>Option 2</th>
                 <th>Option 3</th>
@@ -40,6 +41,7 @@
                 columns: [
                     {data: 'id', name: 'DT_RowIndex'},
                     {data: 'question', name: 'question'},
+                    {data: 'grade_id', name: 'grade_id'},
                     {data: 'option_1', name: 'option_1'},
                     {data: 'option_2', name: 'option_2'},
                     {data: 'option_3', name: 'option_3'},

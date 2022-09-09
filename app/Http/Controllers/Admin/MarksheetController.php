@@ -60,6 +60,10 @@ class MarksheetController extends BaseController
                     return $data->test->name;
                 })
 
+                ->addColumn('created_at', function ($data){
+                    return $data->created_at->format("j-F-Y, H:i:s");
+                })
+
                 ->addColumn('name', function ($data){
                     return $data->student->name ?? '-';
                 })

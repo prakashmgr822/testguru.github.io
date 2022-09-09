@@ -21,7 +21,7 @@
 
             $("#add-subjects").on('click', function () {
                 $("#items").append(`<tr><td class="w-50 text-center"><input type="text" class="form-control" name="names[]" placeholder="Enter Subject Name" required></td>
-<td class="py-3"><i class="fas fa-times-circle close" style="cursor: pointer; padding-right: 360px"></i></td>
+<td class="py-3"><i class="fas fa-times-circle close" style="cursor: pointer; padding-right: 210px"></i></td>
 </tr>`)
             });
 

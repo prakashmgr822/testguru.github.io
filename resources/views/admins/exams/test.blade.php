@@ -222,11 +222,13 @@
                             let seconds = parseInt(timer[1], 10);
                             --seconds;
                             minutes = (seconds < 0) ? --minutes : minutes;
-                            if (minutes < 1) {
+                            if (minutes < 0 && seconds < 0) {
                                 clearInterval(interval);
                                 $('#examWelcomeModal').modal('hide');
                                 // registerModal();
+                                location.reload();
                             }
+
                             if (minutes === 2 && seconds === 0) timeRemainingAlert();
                             seconds = (seconds < 0) ? 59 : seconds;
                             seconds = (seconds < 10) ? '0' + seconds : seconds;

@@ -260,6 +260,12 @@ return [
             'guard' => 'superAdmin'
         ],
         [
+            'text' => 'Student',
+            'route' => 'students.index',
+            'icon' => 'nav-icon fas fa-users',
+            'guard' => 'superAdmin'
+        ],
+        [
             'text' => 'Change Password',
             'route' => 'change-password',
             'icon' => 'nav-icon fas fa-lock ',
@@ -284,12 +290,7 @@ return [
             'icon' => 'nav-icon fas fa-file',
             'guard' => 'admins'
         ],
-        [
-            'text' => 'Student',
-            'route' => 'students.index',
-            'icon' => 'nav-icon fas fa-users',
-            'guard' => 'admins'
-        ],
+
         [
             'text' => 'Question',
             'route' => 'questions.index',
@@ -331,6 +332,23 @@ return [
             'route' => 'student.change-password',
             'icon' => 'nav-icon fas fa-lock ',
             'guard' => 'web'
+        ],
+        [
+            'type'         => 'navbar-notification',
+            'id'           => 'my-notification',
+            'icon'         => 'fas fa-bell',
+            'icon_color'   => 'gray',
+            'label'        => 0,
+            'label_color'  => 'danger',
+            'url'          => false,
+            'guard' => 'web',
+            'topnav_right' => true,
+            'dropdown_mode'   => true,
+            'dropdown_flabel' => false,
+            'update_cfg'   => [
+                'url' => 'user/notifications',
+                'period' => 30,
+            ],
         ],
     ],
 

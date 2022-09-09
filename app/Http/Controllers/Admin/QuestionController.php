@@ -46,6 +46,14 @@ class QuestionController extends BaseController
                     }
                     return $answer;
                 })
+                ->editColumn('grade_id', function ($row) {
+                    $data = $row->subject->grade->name;
+                    return $data;
+                })
+//                ->editColumn('subject_id', function ($row) {
+//                    $data = $row->subject->name;
+//                    return $data;
+//                })
                 ->editColumn('option_1', function ($row) {
                     $data = $row->option_1;
                     return $data;
@@ -55,7 +63,7 @@ class QuestionController extends BaseController
                         'id' => $data->id, 'route' => $this->route
                     ])->render();
                 })
-                ->rawColumns(['action', 'question', 'option_1', 'option_2', 'option_3', 'option_4', 'hint', 'answer'])
+                ->rawColumns(['action', 'question', 'option_1', 'option_2', 'option_3', 'option_4', 'grade_id', 'subject_id', 'answer'])
                 ->make(true);
         }
         $info = $this->crudInfo();
@@ -89,6 +97,7 @@ class QuestionController extends BaseController
             'option_4' => 'required',
         ]);
         $data = $request->all();
+        dd($data);
         $question = new Question($data);
         $question->admin_id = auth('admins')->user()->id;
         $question->save();

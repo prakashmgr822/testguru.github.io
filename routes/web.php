@@ -44,13 +44,14 @@ Route::group(['prefix' => 'superadmin', 'middleware' => 'auth:superAdmin'], func
     Route::resource('grades', \App\Http\Controllers\SuperAdmin\GradeController::class);
     Route::get('/change-password', [\App\Http\Controllers\SuperAdmin\DashboardController::class, 'changePassword'])->name('change-password');
     Route::post('/change-password/save', [\App\Http\Controllers\SuperAdmin\DashboardController::class, 'changePasswordSave'])->name('password.store');
+    Route::resource('students', \App\Http\Controllers\SuperAdmin\StudentController::class);
+
 });
 
 Route::group(['prefix' => 'admins', 'middleware' => 'auth:admins'], function () {
     Route::get('/login', [LoginController::class, 'showAdminLoginForm'])->name('admins.login');
     Route::get('home', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admins.home');
     Route::get('/logout', [LoginController::class, 'logout']);
-    Route::resource('students', \App\Http\Controllers\Admin\StudentController::class);
     Route::resource('questions', \App\Http\Controllers\Admin\QuestionController::class);
     Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
     Route::post('addQuestions/{id}', [\App\Http\Controllers\Admin\TestController::class, 'addQuestion'])->name('addQuestions');
@@ -73,6 +74,8 @@ Route::group(['prefix' => 'exam'], function () {
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/login', [LoginController::class, 'showStudentLoginForm'])->name('student.login');
     Route::get('/home', [\App\Http\Controllers\Student\StudentController::class, 'index'])->name('student.home');
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('test-notification');
+    Route::get('/notification/show/{id}', [\App\Http\Controllers\NotificationController::class, 'show'])->name('notifications.show');
     Route::get('/logout', [LoginController::class, 'logout']);
     Route::resource('test', \App\Http\Controllers\Student\TestController::class);
     Route::resource('marksheet', \App\Http\Controllers\Student\MarksheetController::class);
@@ -98,6 +101,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 
 

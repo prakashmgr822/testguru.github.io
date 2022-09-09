@@ -9,8 +9,12 @@ use App\Models\Question;
 use App\Models\QuestionTest;
 use App\Models\Subject;
 use App\Models\Test;
+use App\Models\User;
+use App\Notifications\TestNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
+use Pusher\Pusher;
 use Yajra\DataTables\DataTables;
 
 class TestController extends BaseController
@@ -97,6 +101,33 @@ class TestController extends BaseController
 //            $test->addMediaFromRequest('image')
 //                ->toMediaCollection();
 //        }
+        $students = User::where('grade_id', $test->grade_id)->get();
+
+
+//        $options = array(
+//            'cluster' => 'ap2',
+//            'useTLS' => true
+//        );
+//
+//
+//        $pusher = new Pusher(
+//            env('PUSHER_APP_KEY'),
+//            env('PUSHER_APP_SECRET'),
+//            env('PUSHER_APP_ID'),
+//            $options
+//        );
+//
+//        $pusher->trigger('test-added', 'TestAdded');
+
+        foreach ($students as $student){
+            try {
+                $student->notify(new TestNotification($test));
+            }
+            catch (\Exception $e){
+
+            }
+        }
+
         return redirect()->route($this->indexRoute())
             ->with('success', 'Test created successfully.');
     }

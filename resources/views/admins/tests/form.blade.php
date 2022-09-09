@@ -1,17 +1,17 @@
 @isset($item)
     <div class="form-group row">
         <div class="col-md-6">
-            <label class="col-form-label">Title</label>
+            <label class="col-form-label">Title *</label>
             <input type="text" class="form-control" name="name" value="{{old('name',$item->name)}}" id="title"
-                   placeholder="Title">
+                   placeholder="Title" required>
         </div>
 
         <div class="col-md-6">
-            <label class="col-form-label">Date</label>
+            <label class="col-form-label">Date *</label>
             <input type="datetime-local" class="form-control"
                    @if($item->target_date) value="{{old('target_date')?? date('Y-m-d\TH:i', strtotime($item->target_date)) }}"
                    @endif name="target_date" id="target_date"
-                   placeholder="Date">
+                   placeholder="Date" required>
         </div>
     </div>
     {{--    <div class="form-group row">--}}
@@ -25,22 +25,22 @@
     {{--    </div>--}}
     <div class="form-group row">
         <div class="col-6 mt-4">
-            <label for="">Exam Duration</label>
+            <label for="">Exam Duration *</label>
             <input type="number" name="exam_duration" class="form-control"
-                   value="{{old('exam_duration',$item->exam_duration)?? ''}}" placeholder="Exam Duration (in minutes)">
+                   value="{{old('exam_duration',$item->exam_duration)?? ''}}" placeholder="Exam Duration (in minutes)" required>
         </div>
         <div class="col-6 mt-4">
-            <label for="">Correct Marks</label>
+            <label for="">Correct Marks *</label>
             <input step="0.01" type="number" name="correct_marks" class="form-control"
                    value="{{old('description',$item->correct_marks)}}" min="0"
-                   placeholder="Enter marks for correct questions.">
+                   placeholder="Enter marks for correct questions." required>
         </div>
     </div>
     <div class="form-group row">
 
         <div class="col-6">
             <label for="">Grade</label>
-            <select name="grade_id" id="" class="form-control">
+            <select name="grade_id" id="" class="form-control" required>
                 <option value="{{null}}">None</option>
                 @foreach($grades as $grade)
                     <option value="{{ $grade->id }}" {{ old('grade_id',$item->grade_id)==$grade->id?'selected':'' }}>{{$grade->name }}</option>
@@ -48,13 +48,13 @@
             </select>
         </div>
 
-        <div class="col-6">
-            <label for="">Status</label>
-            <select name="status" id="" class="form-select form-control">
-                <option value="0" {{old('status',$item->status)==0?'selected':''}}>Pending</option>
-                <option value="1" {{old('status',$item->status)==1?'selected':''}}>Completed</option>
-            </select>
-        </div>
+{{--        <div class="col-6">--}}
+{{--            <label for="">Status</label>--}}
+{{--            <select name="status" id="" class="form-select form-control">--}}
+{{--                <option value="0" {{old('status',$item->status)==0?'selected':''}}>Pending</option>--}}
+{{--                <option value="1" {{old('status',$item->status)==1?'selected':''}}>Completed</option>--}}
+{{--            </select>--}}
+{{--        </div>--}}
     </div>
     <div class="form-group row">
         <div class="col-12 mt-4">
